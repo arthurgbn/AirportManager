@@ -235,6 +235,3 @@ while (z < 10) {
   z = z + 1
 }
 ```
-J'espère que cette version mise à jour de la fiche récapitulative de Scala avec des exemples de code vous sera utile pour apprendre et maîtriser les concepts de base de Scala. N'hésitez pas à me contacter si vous avez des questions ou si vous avez besoin d'aide supplémentaire.
-
-En ce qui concerne Play Framework, les concepts de base de Scala sont utilisés pour écrire du code dans les contrôleurs, les modèles et les vues de l'application. Les variables, les méthodes, les classes, les traits, les expressions et les instructions sont tous utilisés dans le cadre de l'application Play Framework. Vous pouvez également utiliser les types de données immuables de Scala pour stocker des données dans l'application.
