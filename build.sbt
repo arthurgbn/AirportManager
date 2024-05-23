@@ -2,13 +2,13 @@ name := """AirportManager"""
 
 version := "1.0-SNAPSHOT"
 
+
 lazy val root = (project in file(".")).enablePlugins(PlayScala)
 
 scalaVersion := "2.13.14"
 
-libraryDependencies ++= Seq( guice,
-  "org.scalatestplus.play" %% "scalatestplus-play" % "7.0.0" % Test,
-  "org.postgresql" % "postgresql" % "42.7.3",
+libraryDependencies ++= Seq(
+  jdbc, ws, evolutions, jodaForms,
   "org.playframework.anorm" %% "anorm" % "2.7.0",
   "org.playframework" %% "play-mailer" % "10.0.0",
   "org.playframework" %% "play-mailer-guice" % "10.0.0",
@@ -20,7 +20,11 @@ libraryDependencies ++= Seq( guice,
   "com.lunatech" %% "play-googleopenconnect" % "3.0.1",
   "org.json" % "json" % "20240303",
   "com.google.crypto.tink" % "tink" % "1.13.0"
+
 )
+
+Global / onChangedBuildSource := ReloadOnSourceChanges
+
 
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.example.controllers._"

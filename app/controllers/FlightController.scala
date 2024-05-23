@@ -53,7 +53,8 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
         status = "Scheduled"
       )
 
-      flightService.addFlight(newFlight).map { _ =>
+      flightService.addFlight(newFlight)
+      Future {
         Redirect(routes.FlightController.index)
       }
     }
