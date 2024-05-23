@@ -1,234 +1,233 @@
+**Syntax**
 
-**Syntaxe**
+* Variable, method, and class names in Scala start with a lowercase or uppercase letter, followed by letters, numbers, or underscores (`_`).
+* Scala's reserved keywords are in lowercase, such as `val`, `var`, `def`, `if`, `else`, `for`, etc.
+* Code blocks are delimited by curly braces (`{}`).
+* Inline comments are preceded by a double slash (`//`). Block comments are delimited by `/*` and `*/`.
 
-* Les noms de variables, de méthodes et de classes commencent par une lettre minuscule ou majuscule, suivie de lettres, de chiffres ou de caractères de soulignement (`_`).
-* Les mots-clés réservés de Scala sont en minuscules, comme `val`, `var`, `def`, `if`, `else`, `for`, etc.
-* Les blocs de code sont délimités par des accolades (`{}`).
-* Les commentaires en ligne sont précédés d'un double slash (`//`). Les commentaires de bloc sont délimités par `/*` et `*/`.
-
-Exemple de code :
+Example code:
 ```scala
-// Déclaration d'une variable immuable
+// Declaration of an immutable variable
 val x: Int = 10
 
-// Déclaration d'une variable mutable
+// Declaration of a mutable variable
 var y: Double = 20.0
 
-// Définition d'une méthode
+// Definition of a method
 def add(a: Int, b: Int): Int = {
   a + b
 }
 
-// Appel de la méthode add
+// Calling the add method
 val z: Int = add(x, y.toInt)
 
-// Déclaration d'une classe
+// Declaration of a class
 class Personne(val nom: String, val age: Int) {
   def presentation(): Unit = {
-    println(s"Bonjour, je m'appelle $nom et j'ai $age ans.")
+    println(s"Hello, my name is $nom and I am $age years old.")
   }
 }
 
-// Création d'une instance de la classe Personne
+// Creating an instance of the Personne class
 val p: Personne = new Personne("Alice", 30)
 
-// Appel de la méthode presentation de l'instance p
+// Calling the presentation method of the instance p
 p.presentation()
 ```
-**Types de données**
+**Data Types**
 
-* Scala a un système de types statique et fortement typé. Toutes les variables et tous les paramètres de méthode ont un type de données associé.
-* Les types de données de base en Scala comprennent `Byte`, `Short`, `Int`, `Long`, `Float`, `Double`, `Boolean`, `Char`, `String`, `Unit` (pour les méthodes qui ne renvoient rien), `Any` (le type de base de tous les autres types), `AnyVal` (le type de base de tous les types de valeurs), `AnyRef` (le type de base de tous les types de références), `Null` (pour la valeur `null`), etc.
-* Les types de données immuables en Scala comprennent `List`, `Set`, `Map`, `Tuple`, etc.
+* Scala has a static and strongly-typed type system. All variables and method parameters have an associated data type.
+* The basic data types in Scala include `Byte`, `Short`, `Int`, `Long`, `Float`, `Double`, `Boolean`, `Char`, `String`, `Unit` (for methods that do not return anything), `Any` (the base type of all other types), `AnyVal` (the base type of all value types), `AnyRef` (the base type of all reference types), `Null` (for the `null` value), etc.
+* The immutable data types in Scala include `List`, `Set`, `Map`, `Tuple`, etc.
 
-Exemple de code :
+Example code:
 ```scala
-// Déclaration d'une variable de type String
-val s: String = "Bonjour"
+// Declaration of a variable of type String
+val s: String = "Hello"
 
-// Déclaration d'une variable de type Boolean
+// Declaration of a variable of type Boolean
 val b: Boolean = true
 
-// Déclaration d'une variable de type List immuable
+// Declaration of an immutable variable of type List
 val l: List[Int] = List(1, 2, 3)
 
-// Déclaration d'une variable de type Tuple
-val t: (String, Int) = ("Bonjour", 1)
+// Declaration of a variable of type Tuple
+val t: (String, Int) = ("Hello", 1)
 ```
 **Variables**
 
-* Les variables en Scala peuvent être déclarées avec le mot-clé `val` (pour les variables immuables) ou `var` (pour les variables mutables).
-* Les variables ont un type de données associé, qui peut être spécifié explicitement ou déduit automatiquement par le compilateur.
-* Les variables peuvent être affectées à des valeurs littérales, à des expressions ou à des résultats de méthodes.
+* Variables in Scala can be declared with the `val` keyword (for immutable variables) or the `var` keyword (for mutable variables).
+* Variables have an associated data type, which can be specified explicitly or inferred automatically by the compiler.
+* Variables can be assigned to literal values, expressions, or method results.
 
-Exemple de code :
+Example code:
 ```scala
-// Déclaration d'une variable immuable et affectation d'une valeur littérale
+// Declaration of an immutable variable and assignment of a literal value
 val x: Int = 10
 
-// Déclaration d'une variable mutable et affectation d'une valeur littérale
+// Declaration of a mutable variable and assignment of a literal value
 var y: Double = 20.0
 
-// Affectation d'une expression à une variable mutable
+// Assignment of an expression to a mutable variable
 y = y * 2.0
 
-// Affectation d'un résultat de méthode à une variable immuable
+// Assignment of a method result to an immutable variable
 val z: Int = Math.round(y).toInt
 ```
-**Méthodes**
+**Methods**
 
-* Les méthodes en Scala sont définies avec le mot-clé `def`, suivi du nom de la méthode, des paramètres (entre parenthèses) et du type de retour (après une flèche `=>`).
-* Les méthodes peuvent être définies dans des classes, des objets ou des traits.
-* Les méthodes peuvent être appelées avec leur nom et leurs arguments entre parenthèses.
-* Les méthodes peuvent être récursives ou surchargées.
+* Methods in Scala are defined with the `def` keyword, followed by the method name, parameters (in parentheses), and return type (after an arrow `=>`).
+* Methods can be defined in classes, objects, or traits.
+* Methods can be called with their name and arguments in parentheses.
+* Methods can be recursive or overloaded.
 
-Exemple de code :
+Example code:
 ```scala
-// Définition d'une méthode qui prend deux nombres entiers et renvoie leur somme
+// Definition of a method that takes two integers and returns their sum
 def add(a: Int, b: Int): Int = {
   a + b
 }
 
-// Appel de la méthode add avec les arguments 10 et 20
+// Calling the add method with the arguments 10 and 20
 val z: Int = add(10, 20)
 
-// Définition d'une méthode récursive qui calcule la factorielle d'un nombre entier
+// Definition of a recursive method that calculates the factorial of an integer
 def factorial(n: Int): Int = {
   if (n <= 0) 1
   else n * factorial(n - 1)
 }
 
-// Appel de la méthode factorial avec l'argument 5
+// Calling the factorial method with the argument 5
 val f: Int = factorial(5)
 ```
 **Classes**
 
-* Les classes en Scala sont définies avec le mot-clé `class`, suivi du nom de la classe, des paramètres de constructeur (entre parenthèses) et du corps de la classe (entre accolades).
-* Les classes peuvent avoir des champs (variables), des méthodes, des constructeurs auxiliaires, etc.
-* Les classes peuvent hériter d'autres classes ou implémenter des traits.
-* Les objets en Scala sont des instances de classes.
+* Classes in Scala are defined with the `class` keyword, followed by the class name, constructor parameters (in parentheses), and the class body (in curly braces).
+* Classes can have fields (variables), methods, auxiliary constructors, etc.
+* Classes can inherit from other classes or implement traits.
+* Objects in Scala are instances of classes.
 
-Exemple de code :
+Example code:
 ```scala
-// Définition d'une classe Personne avec un nom et un âge
+// Definition of a Personne class with a name and age
 class Personne(val nom: String, val age: Int) {
   def presentation(): Unit = {
-    println(s"Bonjour, je m'appelle $nom et j'ai $age ans.")
+    println(s"Hello, my name is $nom and I am $age years old.")
   }
 }
 
-// Création d'une instance de la classe Personne avec le nom "Alice" et l'âge 30
+// Creating an instance of the Personne class with the name "Alice" and the age 30
 val p: Personne = new Personne("Alice", 30)
 
-// Appel de la méthode presentation de l'instance p
+// Calling the presentation method of the instance p
 p.presentation()
 
-// Définition d'une classe Etudiant qui hérite de la classe Personne et qui a une liste de notes
+// Definition of an Etudiant class that inherits from the Personne class and has a list of grades
 class Etudiant(nom: String, age: Int, val notes: List[Double]) extends Personne(nom, age) {
   def moyenne(): Double = {
     notes.sum / notes.size
   }
 }
 
-// Création d'une instance de la classe Etudiant avec le nom "Bob", l'âge 20 et les notes [10.0, 12.0, 8.0]
+// Creating an instance of the Etudiant class with the name "Bob", the age 20, and the grades [10.0, 12.0, 8.0]
 val e: Etudiant = new Etudiant("Bob", 20, List(10.0, 12.0, 8.0))
 
-// Appel de la méthode moyenne de l'instance e
+// Calling the moyenne method of the instance e
 val m: Double = e.moyenne()
 ```
 **Traits**
 
-* Les traits en Scala sont des interfaces abstraites qui peuvent contenir des méthodes abstraites, des méthodes concrètes, des champs, etc.
-* Les traits peuvent être mélangés dans des classes ou des objets pour fournir des fonctionnalités supplémentaires.
-* Les traits peuvent hériter d'autres traits ou de classes.
+* Traits in Scala are abstract interfaces that can contain abstract methods, concrete methods, fields, etc.
+* Traits can be mixed into classes or objects to provide additional functionality.
+* Traits can inherit from other traits or classes.
 
-Exemple de code :
+Example code:
 ```scala
-// Définition d'un trait Forme qui a une méthode abstraite surface
+// Definition of a Forme trait that has an abstract method surface
 trait Forme {
   def surface(): Double
 }
 
-// Définition d'une classe Cercle qui implémente le trait Forme et qui a un rayon
+// Definition of a Cercle class that implements the Forme trait and has a radius
 class Cercle(val rayon: Double) extends Forme {
   override def surface(): Double = {
     Math.PI * rayon * rayon
   }
 }
 
-// Création d'une instance de la classe Cercle avec un rayon de 5.0
+// Creating an instance of the Cercle class with a radius of 5.0
 val c: Cercle = new Cercle(5.0)
 
-// Appel de la méthode surface de l'instance c
+// Calling the surface method of the instance c
 val s: Double = c.surface()
 
-// Définition d'un trait Couleur qui a une méthode abstraite couleur et une méthode concrète afficherCouleur
+// Definition of a Couleur trait that has an abstract method couleur and a concrete method afficherCouleur
 trait Couleur {
   def couleur(): String
   def afficherCouleur(): Unit = {
-    println(s"La couleur est $couleur()")
+    println(s"The color is $couleur()")
   }
 }
 
-// Définition d'une classe CercleColoré qui implémente les traits Forme et Couleur et qui a un rayon et une couleur
+// Definition of a CercleColoré class that implements the Forme and Couleur traits and has a radius and a color
 class CercleColoré(rayon: Double, val couleur: String) extends Forme {
   override def surface(): Double = {
     Math.PI * rayon * rayon
   }
 } with Couleur
 
-// Création d'une instance de la classe CercleColoré avec un rayon de 5.0 et une couleur "rouge"
-val cc: CercleColoré = new CercleColoré(5.0, "rouge")
+// Creating an instance of the CercleColoré class with a radius of 5.0 and a color "red"
+val cc: CercleColoré = new CercleColoré(5.0, "red")
 
-// Appel de la méthode afficherCouleur de l'instance cc
+// Calling the afficherCouleur method of the instance cc
 cc.afficherCouleur()
 ```
 **Expressions**
 
-* Les expressions en Scala sont des unités de code qui produisent une valeur.
-* Les expressions peuvent être des littéraux, des variables, des appels de méthodes, des opérations sur des données, des blocs de code, etc.
-* Les expressions peuvent être imbriquées les unes dans les autres pour former des expressions plus complexes.
+* Expressions in Scala are units of code that produce a value.
+* Expressions can be literals, variables, method calls, operations on data, code blocks, etc.
+* Expressions can be nested within each other to form more complex expressions.
 
-Exemple de code :
+Example code:
 ```scala
-// Déclaration d'une variable immuable et affectation d'une expression littérale
+// Declaration of an immutable variable and assignment of a literal expression
 val x: Int = 10
 
-// Déclaration d'une variable immuable et affectation d'une expression d'opération sur des données
+// Declaration of an immutable variable and assignment of an operation expression on data
 val y: Int = x * 2
 
-// Déclaration d'une variable immuable et affectation d'une expression d'appel de méthode
+// Declaration of an immutable variable and assignment of a method call expression
 val z: Double = Math.sqrt(y.toDouble)
 
-// Déclaration d'une variable immuable et affectation d'une expression de bloc de code
+// Declaration of an immutable variable and assignment of a code block expression
 val w: String = {
-  val a: String = "Bonjour"
+  val a: String = "Hello"
   val b: String = "Scala"
   a + " " + b
 }
 ```
 **Instructions**
 
-* Les instructions en Scala sont des unités de code qui effectuent une action, mais ne produisent pas de valeur.
-* Les instructions sont utilisées pour contrôler le flux d'exécution du programme, comme les instructions de boucle (`for`, `while`, etc.) et les instructions conditionnelles (`if`, `else`, etc.).
+* Instructions in Scala are units of code that perform an action, but do not produce a value.
+* Instructions are used to control the flow of execution of the program, such as loop instructions (`for`, `while`, etc.) and conditional instructions (`if`, `else`, etc.).
 
-Exemple de code :
+Example code:
 ```scala
-// Déclaration d'une variable mutable et affectation d'une valeur littérale
+// Declaration of a mutable variable and assignment of a literal value
 var x: Int = 10
 
-// Instruction d'affectation d'une expression d'opération sur des données à une variable mutable
+// Instruction of assignment of an operation expression on data to a mutable variable
 x = x * 2
 
-// Instruction conditionnelle if-else
+// Conditional instruction if-else
 val y: Int = if (x > 0) x else -x
 
-// Instruction de boucle for
+// For loop instruction
 for (i <- 1 to 10) {
   println(i)
 }
 
-// Instruction de boucle while
+// While loop instruction
 var z: Int = 0
 while (z < 10) {
   println(z)
