@@ -13,11 +13,11 @@ import services.FlightService
 @Singleton
 class FlightController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
 
-  val flightService = new FlightService()
+  private val flightService = new FlightService()
 
 
 
-  val flights: Seq[Flight] = flightService.getFlights()
+  val flights: List[Flight] = flightService.getFlights()
 
 
     /**

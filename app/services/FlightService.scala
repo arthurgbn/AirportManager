@@ -4,13 +4,14 @@ import models.Flight
 import models.Airport
 import models.Plane
 
+
 import java.time.LocalDateTime
-import play.api.db.Database
-import anorm._
-import anorm.SqlParser.get
+//import play.api.db.Database
+//import anorm._
+//import anorm.SqlParser.get
 
 
-class FlightService(db: Database) {
+/*class FlightService(db: Database) {
 
   private val simple = {
     get[Long]("flight.id") ~
@@ -73,3 +74,21 @@ class FlightService(db: Database) {
     db.withConnection { implicit connection =>
       val sql = SQL("insert into flight(departure_airport_id, arrival_airport_id, departure_time, arrival_time, plane_id, status) values({departureAirportId}, {arrivalAirportId}, {departureTime
 
+
+
+ */
+
+class FlightService {
+
+    private val flights = List(
+      Flight(1, Airport(1, "John F. Kennedy International Airport", "JFK", "New York", "USA"), Airport(2, "Los Angeles International Airport", "LAX", "Los Angeles", "USA"), LocalDateTime.of(2018, 1, 1, 10, 0), LocalDateTime.of(2018, 1, 1, 13, 0), Plane(1, "Boeing 747", 400), "Active"),
+      Flight(2, Airport(2, "Los Angeles International Airport", "LAX", "Los Angeles", "USA"), Airport(3, "Heathrow Airport", "LHR", "London", "UK"), LocalDateTime.of(2018, 1, 2, 10, 0), LocalDateTime.of(2018, 1, 2, 13, 0), Plane(2, "Airbus A380", 600), "Active"),
+      Flight(3, Airport(3, "Heathrow Airport", "LHR", "London", "UK"), Airport(1, "John F. Kennedy International Airport", "JFK", "New York", "USA"), LocalDateTime.of(2018, 1, 3, 10, 0), LocalDateTime.of(2018, 1, 3, 13, 0), Plane(3, "Boeing 737", 200), "Active")
+    )
+
+    def getFlights(): List[Flight] = {
+      flights
+    }
+
+
+}

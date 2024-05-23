@@ -1,22 +1,21 @@
 @import java.time.format.DateTimeFormatter
-@(flights: Seq[Flight])
+@(flights: List[Flight])
 
-<h1>Flights</h1>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Departure Airport</th>
-            <th>Arrival Airport</th>
-            <th>Departure Time</th>
-            <th>Arrival Time</th>
-            <th>Plane</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+@main("Flights") {
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Departure Airport</th>
+                <th>Arrival Airport</th>
+                <th>Departure Time</th>
+                <th>Arrival Time</th>
+                <th>Plane</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
         @for(flight <- flights) {
             <tr>
                 <td>@flight.id</td>
@@ -28,5 +27,6 @@
                 <td>@flight.status</td>
             </tr>
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
+}
