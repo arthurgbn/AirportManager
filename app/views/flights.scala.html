@@ -1,0 +1,32 @@
+@import java.time.format.DateTimeFormatter
+@(flights: Seq[Flight])
+
+<h1>Flights</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Departure Airport</th>
+            <th>Arrival Airport</th>
+            <th>Departure Time</th>
+            <th>Arrival Time</th>
+            <th>Plane</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(flight <- flights) {
+            <tr>
+                <td>@flight.id</td>
+                <td>@flight.departureAirport.name</td>
+                <td>@flight.arrivalAirport.name</td>
+                <td>@flight.departureTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
+                <td>@flight.arrivalTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
+                <td>@flight.plane.model</td>
+                <td>@flight.status</td>
+            </tr>
+        }
+    </tbody>
+</table>
