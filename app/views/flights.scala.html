@@ -1,32 +1,44 @@
 @import java.time.format.DateTimeFormatter
 @(flights: List[Flight])
 
-@main("Flights") {
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Departure Airport</th>
-                <th>Arrival Airport</th>
-                <th>Departure Time</th>
-                <th>Arrival Time</th>
-                <th>Plane</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        @for(flight <- flights) {
-            <tr>
-                <td>@flight.id</td>
-                <td>@flight.departureAirport.name</td>
-                <td>@flight.arrivalAirport.name</td>
-                <td>@flight.departureTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
-                <td>@flight.arrivalTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
-                <td>@flight.plane.model</td>
-                <td>@flight.status</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
+    @main("Flights") {
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <div class="container">
+            <h1>Flights</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Departure Airport</th>
+                        <th>Arrival Airport</th>
+                        <th>Departure Time</th>
+                        <th>Arrival Time</th>
+                        <th>Plane</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(flight <- flights) {
+                    <tr>
+                        <td>@flight.id</td>
+                        <td>@flight.departureAirport.name</td>
+                        <td>@flight.arrivalAirport.name</td>
+                        <td>@flight.departureTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
+                        <td>@flight.arrivalTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
+                        <td>@flight.plane.model</td>
+                        <td>@flight.status</td>
+                        <td>
+                            <form action="@routes.FlightController.delete(flight.id)" method="post">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+            <a href="@routes.FlightController.addFlight" class="btn btn-primary">Add Flight</a>
+
+        </div>
+    }
