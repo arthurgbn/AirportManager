@@ -32,17 +32,14 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
   def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     implicit val ec: ExecutionContext = ExecutionContext.global
 
-    println("test " + request.body.asFormUrlEncoded.get("departureTime"))
     val departureAirportId = request.body.asFormUrlEncoded.get("departureAirport").head.toLong
-    // to display info in the logs :
-    println("departureAirportId: " + departureAirportId)
     val arrivalAirportId = request.body.asFormUrlEncoded.get("arrivalAirport").head.toLong
     val departureTime = request.body.asFormUrlEncoded.get("departureTime").head
     val arrivalTime = request.body.asFormUrlEncoded.get("arrivalTime").head
     val planeId = request.body.asFormUrlEncoded.get("plane").head.toLong
-    val flights = flightService.getFlights
+
     val newFlight = Flight(
-      id = flights.size + 1,
+      id = 0L,
       departureAirportId = departureAirportId,
       arrivalAirportId = arrivalAirportId,
       departureTime = LocalDateTime.parse(departureTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")),
@@ -51,8 +48,7 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
       status = "Scheduled"
     )
 
-    flightService.addFlight(newFlight)
-    Future {
+    flightService.addFlight(newFlight).map { _ =>
       Redirect(routes.FlightController.index)
     }
   }

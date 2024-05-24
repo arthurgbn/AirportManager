@@ -16,7 +16,7 @@ CREATE TABLE airports (
 );
 
 CREATE TABLE flights (
-                         id INT PRIMARY KEY,
+                         id INT PRIMARY KEY  AUTO_INCREMENT,
                          departure_airport_id INT,
                          arrival_airport_id INT,
                          departure_time TIMESTAMP,

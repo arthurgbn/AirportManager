@@ -90,18 +90,20 @@ class FlightService @Inject()(db: Database) {
 
   def deleteFlight (id: Long): Unit = {
     db.withConnection { implicit connection =>
-      SQL("DELETE FROM flights WHERE id = $id").executeUpdate()
+      SQL("DELETE FROM flights WHERE id = {id}")
+        .on("id" -> id)
+        .executeUpdate()
     }
   }
 
-  def addFlight(flight: Flight): Unit = {
+  def addFlight(flight: Flight): Future[Long] = {
     Future {
       db.withConnection { implicit connection =>
         SQL(
           """
-            INSERT INTO flights (departure_airport_id, arrival_airport_id, departure_time, arrival_time, plane_id, status)
-            VALUES ({departureAirportId}, {arrivalAirportId}, {departureTime}, {arrivalTime}, {planeId}, {status})
-          """
+          INSERT INTO flights (departure_airport_id, arrival_airport_id, departure_time, arrival_time, plane_id, status)
+          VALUES ({departureAirportId}, {arrivalAirportId}, {departureTime}, {arrivalTime}, {planeId}, {status})
+        """
         ).on(
           "departureAirportId" -> flight.departureAirportId,
           "arrivalAirportId" -> flight.arrivalAirportId,
