@@ -10,7 +10,7 @@ import play.api.db.Database
 
 class MyModule(environment: Environment, configuration: Configuration) extends AbstractModule with PekkoGuiceSupport {
   override def configure(): Unit = {
-    bind(classOf[FlightService]).asEagerSingleton()
+    //bind(classOf[FlightService]).toInstance(new FlightService(Database.forConfig("flightdb")))
 
   }
 }
