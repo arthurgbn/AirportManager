@@ -16,7 +16,9 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
 
   def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val flights = flightService.getFlights
-    Ok(views.html.flights(flights))
+    val airports = flightService.getAirports
+    val planes = flightService.getPlanes
+    Ok(views.html.flights(flights, airports, planes))
   }
 
   def delete(id: Long): Action[AnyContent] = Action {
@@ -45,11 +47,11 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
       val flights = flightService.getFlights
       val newFlight = Flight(
         id = flights.size + 1,
-        departureAirport = airports.find(_.id == departureAirportId).getOrElse(Airport(0, "", "", "", "")),
-        arrivalAirport = airports.find(_.id == arrivalAirportId).getOrElse(Airport(0, "", "", "", "")),
+        departureAirportId = departureAirportId,
+        arrivalAirportId = arrivalAirportId,
         departureTime = LocalDateTime.parse(departureTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")),
         arrivalTime = LocalDateTime.parse(arrivalTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")),
-        plane = planes.find(_.id == planeId).getOrElse(Plane(0, "", 0)),
+        planeId = planeId,
         status = "Scheduled"
       )
 

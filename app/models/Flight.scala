@@ -4,10 +4,10 @@ import java.time.LocalDateTime
 
 case class Flight(
                    id: Long,
-                   departureAirport: Airport,
-                   arrivalAirport: Airport,
+                   departureAirportId: Long,
+                   arrivalAirportId: Long,
                    departureTime: LocalDateTime,
                    arrivalTime: LocalDateTime,
-                   plane: Plane,
+                   planeId: Long,
                    status: String
                  )
