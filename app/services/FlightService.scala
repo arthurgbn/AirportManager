@@ -17,20 +17,6 @@ import scala.language.postfixOps
 
 class FlightService @Inject()(db: Database) {
 
-  private val planes = List(
-    Plane(1, "Boeing 747", 400),
-    Plane(2, "Airbus A380", 600),
-    Plane(3, "Boeing 737", 200)
-  )
-
-  private val airports = List(
-    Airport(1, "Los Angeles International Airport", "LAX", "Los Angeles", "USA"),
-    Airport(2, "JFK International Airport", "JFK", "New York", "USA"),
-    Airport(3, "London Heathrow", "LHR", "London", "UK"),
-    Airport(4, "Schiphol", "AMS", "Amsterdam", "Netherlands"),
-    Airport(5, "Charles de Gaulle", "CDG", "Paris", "France"),
-    Airport(6, "Frankfurt Airport", "FRA", "Frankfurt", "Germany")
-  )
 
   val simpleAirport: RowParser[Airport] = {
     get[Long]("id") ~
@@ -59,7 +45,7 @@ class FlightService @Inject()(db: Database) {
       get[Long]("plane_id") ~
       get[String]("status") map {
       case id ~ departureAirportId ~ arrivalAirportId ~ departureTime ~ arrivalTime ~ planeId ~ status =>
-        Flight(id, airports.find(_.id == departureAirportId).get, airports.find(_.id == arrivalAirportId).get, departureTime, arrivalTime, planes.find(_.id == planeId).get, status)
+        Flight(id, departureAirportId, arrivalAirportId, departureTime, arrivalTime, planeId, status)
     }
   }
 
@@ -116,11 +102,11 @@ class FlightService @Inject()(db: Database) {
             VALUES ({departureAirportId}, {arrivalAirportId}, {departureTime}, {arrivalTime}, {planeId}, {status})
           """
         ).on(
-          "departureAirportId" -> flight.departureAirport.id,
-          "arrivalAirportId" -> flight.arrivalAirport.id,
+          "departureAirportId" -> flight.departureAirportId,
+          "arrivalAirportId" -> flight.arrivalAirportId,
           "departureTime" -> flight.departureTime,
           "arrivalTime" -> flight.arrivalTime,
-          "planeId" -> flight.plane.id,
+          "planeId" -> flight.planeId,
           "status" -> flight.status
         ).executeInsert(scalar[Long].single)
       }
