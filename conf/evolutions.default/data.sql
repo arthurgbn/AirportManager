@@ -1,3 +1,7 @@
+
+# --- !Ups
+
+
 INSERT INTO planes (id, model, capacity) VALUES (1, 'Boeing 747', 400);
 INSERT INTO planes (id, model, capacity) VALUES (2, 'Airbus A380', 600);
 INSERT INTO planes (id, model, capacity) VALUES (3, 'Boeing 737', 200);
@@ -15,4 +19,5 @@ INSERT INTO flights (id, departure_airport_id, arrival_airport_id, departure_tim
 INSERT INTO flights (id, departure_airport_id, arrival_airport_id, departure_time, arrival_time, plane_id, status) VALUES (4, 4, 3, '2021-08-04 09:00:00', '2021-08-04 12:00:00', 1, 'Scheduled');
 INSERT INTO flights (id, departure_airport_id, arrival_airport_id, departure_time, arrival_time, plane_id, status) VALUES (5, 5, 6, '2021-08-05 09:00:00', '2021-08-05 12:00:00', 2, 'Scheduled');
 INSERT INTO flights (id, departure_airport_id, arrival_airport_id, departure_time, arrival_time, plane_id, status) VALUES (6, 6, 5, '2021-08-06 09:00:00', '2021-08-06 12:00:00', 3, 'Scheduled');
--- --- End of file
+
+# --- !Downs

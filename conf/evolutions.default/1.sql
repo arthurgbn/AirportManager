@@ -1,3 +1,6 @@
+# --- !Ups
+
+
 CREATE TABLE planes (
                         id INT PRIMARY KEY,
                         model VARCHAR(255),
@@ -24,3 +27,5 @@ CREATE TABLE flights (
                          FOREIGN KEY (arrival_airport_id) REFERENCES airports (id),
                          FOREIGN KEY (plane_id) REFERENCES planes (id)
 );
+
+# --- !Downs
