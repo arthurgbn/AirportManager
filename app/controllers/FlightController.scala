@@ -4,7 +4,6 @@ import models.{Airport, Flight, Plane}
 
 import javax.inject._
 import play.api.mvc._
-import play.api.mvc
 import services.FlightService
 
 import java.time.LocalDateTime
@@ -41,9 +40,6 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
     val departureTime = request.body.asFormUrlEncoded.get("departureTime").head
     val arrivalTime = request.body.asFormUrlEncoded.get("arrivalTime").head
     val planeId = request.body.asFormUrlEncoded.get("plane").head.toLong
-
-    val airports = flightService.getAirports
-    val planes = flightService.getPlanes
     val flights = flightService.getFlights
     val newFlight = Flight(
       id = flights.size + 1,

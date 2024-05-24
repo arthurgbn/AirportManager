@@ -21,18 +21,18 @@ class FlightService @Inject()(db: Database) {
   val simpleAirport: RowParser[Airport] = {
     get[Long]("id") ~
       get[String]("name") ~
-      get[String]("iata") ~
+      get[String]("code") ~
       get[String]("city") ~
       get[String]("country") map {
-      case id ~ name ~ iata ~ city ~ country => Airport(id, name, iata, city, country)
+      case id ~ name ~ code ~ city ~ country => Airport(id, name, code, city, country)
     }
   }
 
   val simplePlane: RowParser[Plane] = {
     get[Long]("id") ~
-      get[String]("name") ~
+      get[String]("model") ~
       get[Int]("capacity") map {
-      case id ~ name ~ capacity => Plane(id, name, capacity)
+      case id ~ model ~ capacity => Plane(id, model, capacity)
     }
   }
 
@@ -48,6 +48,7 @@ class FlightService @Inject()(db: Database) {
         Flight(id, departureAirportId, arrivalAirportId, departureTime, arrivalTime, planeId, status)
     }
   }
+
 
 
 
