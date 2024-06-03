@@ -33,11 +33,12 @@ class PlaneService @Inject()(db: Database) {
   }
 
   // delete a plane by id from the database if it exists and it is not used in any flight
-  def deletePlane(id: Long): Unit = {
+  def deletePlane(id: Long): Boolean = {
     db.withConnection { implicit connection =>
-      SQL("DELETE FROM planes WHERE id = {id} AND id NOT IN (SELECT plane_id FROM flights)")
+      val updateCount = SQL("DELETE FROM planes WHERE id = {id} AND id NOT IN (SELECT plane_id FROM flights)")
         .on("id" -> id)
         .executeUpdate()
+      updateCount > 0
     }
   }
 

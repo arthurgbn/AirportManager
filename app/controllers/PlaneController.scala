@@ -9,8 +9,12 @@ import scala.concurrent.ExecutionContext
 class PlaneController @Inject()(val controllerComponents: ControllerComponents, planeService: PlaneService) extends BaseController {
 
   def delete(id: Long) = Action {
-    planeService.deletePlane(id)
-    Redirect(routes.HomeController.index())
+    val success = planeService.deletePlane(id)
+    if (success) {
+      Redirect(routes.HomeController.index())
+    } else {
+      Redirect(routes.HomeController.index()).flashing("error" -> "Cannot delete plane because it is used in a flight.")
+    }
   }
 
 

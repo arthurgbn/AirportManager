@@ -12,8 +12,12 @@ import scala.concurrent.ExecutionContext
 class AirportController @Inject()(val controllerComponents: ControllerComponents, airportService: AirportService) extends BaseController {
 
   def delete(id: Long) = Action {
-    airportService.deleteAirport(id)
-    Redirect(routes.HomeController.index())
+    val success = airportService.deleteAirport(id)
+    if (success) {
+      Redirect(routes.HomeController.index())
+    } else {
+      Redirect(routes.HomeController.index()).flashing("error" -> "Cannot delete airport because it is used in a flight.")
+    }
   }
 
   def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>

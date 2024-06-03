@@ -9,7 +9,7 @@ import services.{AirportService, FlightService, PlaneService}
 class HomeController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
   def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
+    Ok(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes)).flashing(request.flash)
   }
 
   def goToAddFlight(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>

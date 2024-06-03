@@ -36,11 +36,12 @@ class AirportService @Inject()(db: Database) {
   }
 
   // delete an airport by id from the database if it exists and it is not used in any flight
-  def deleteAirport(id: Long): Unit = {
+  def deleteAirport(id: Long): Boolean = {
     db.withConnection { implicit connection =>
-      SQL("DELETE FROM airports WHERE id = {id} AND id NOT IN (SELECT departure_airport_id FROM flights) AND id NOT IN (SELECT arrival_airport_id FROM flights)")
+      val updateCount = SQL("DELETE FROM airports WHERE id = {id} AND id NOT IN (SELECT departure_airport_id FROM flights) AND id NOT IN (SELECT arrival_airport_id FROM flights)")
         .on("id" -> id)
         .executeUpdate()
+      updateCount > 0
     }
   }
 
