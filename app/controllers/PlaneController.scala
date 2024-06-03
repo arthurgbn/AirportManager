@@ -8,7 +8,7 @@ import scala.concurrent.ExecutionContext
 
 class PlaneController @Inject()(val controllerComponents: ControllerComponents, planeService: PlaneService) extends BaseController {
 
-  def delete(id: Long) = Action {
+  def delete(id: Long): Action[AnyContent] = Action {
     val success = planeService.deletePlane(id)
     if (success) {
       Redirect(routes.HomeController.index())
