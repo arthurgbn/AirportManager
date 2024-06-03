@@ -18,7 +18,7 @@ class PlaneController @Inject()(val controllerComponents: ControllerComponents, 
     implicit val ec: ExecutionContext = ExecutionContext.global
 
     val name = request.body.asFormUrlEncoded.get("model").head
-    val capacity = request.body.asFormUrlEncoded.get("seats").head.toInt
+    val capacity = request.body.asFormUrlEncoded.get("capacity").head.toInt
 
     planeService.addPlane(name, capacity).map { _ =>
       Redirect(routes.HomeController.index())

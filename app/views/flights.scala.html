@@ -1,46 +1,38 @@
 @import java.time.format.DateTimeFormatter
+
 @(flights: List[Flight], airports: List[Airport], planes: List[Plane])
 
-    @main("Flights") {
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Departure Airport</th>
+            <th>Arrival Airport</th>
+            <th>Departure Time</th>
+            <th>Arrival Time</th>
+            <th>Plane</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(flight <- flights) {
+            <tr>
+                <td>@flight.id</td>
+                <td>@airports.find(_.id == flight.departureAirportId).map(_.name).getOrElse("Unknown")</td>
+                <td>@airports.find(_.id == flight.arrivalAirportId).map(_.name).getOrElse("Unknown")</td>
+                <td>@flight.departureTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
+                <td>@flight.arrivalTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
+                <td>@planes.find(_.id == flight.planeId).map(_.model).getOrElse("Unknown")</td>
+                <td>@flight.status</td>
+                <td>
+                    <form action="@routes.FlightController.delete(flight.id)" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-        <div class="container">
-            <h1>Flights</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Departure Airport</th>
-                        <th>Arrival Airport</th>
-                        <th>Departure Time</th>
-                        <th>Arrival Time</th>
-                        <th>Plane</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                @for(flight <- flights) {
-                    <tr>
-                        <td>@flight.id</td>
-                        <td>@airports.find(_.id == flight.departureAirportId).map(_.name).getOrElse("Unknown")</td>
-                        <td>@airports.find(_.id == flight.arrivalAirportId).map(_.name).getOrElse("Unknown")</td>
-                        <td>@flight.departureTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
-                        <td>@flight.arrivalTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
-                        <td>@planes.find(_.id == flight.planeId).map(_.model).getOrElse("Unknown")</td>
-                        <td>@flight.status</td>
-                        <td>
-                            <form action="@routes.FlightController.delete(flight.id)" method="post">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-            <a href="@routes.HomeController.goToAddFlight" class="btn btn-primary">Add Flight</a>
-            <a href="@routes.HomeController.goToAddPlane" class="btn btn-primary">Add Plane</a>
-            <a href="@routes.HomeController.goToAddAirport" class="btn btn-primary">Add Airport</a>
-
-        </div>
-    }
+<a href="@routes.HomeController.goToAddFlight" class="btn btn-primary">Add Flight</a>
