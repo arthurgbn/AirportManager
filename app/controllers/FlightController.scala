@@ -4,7 +4,7 @@ import models.{Airport, Flight, Plane}
 
 import javax.inject._
 import play.api.mvc._
-import services.FlightService
+import services.{AirportService, FlightService, PlaneService}
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -13,21 +13,12 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class FlightController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService) extends BaseController {
 
-  def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    val flights = flightService.getFlights
-    val airports = flightService.getAirports
-    val planes = flightService.getPlanes
-    Ok(views.html.flights(flights, airports, planes))
-  }
 
   def delete(id: Long): Action[AnyContent] = Action {
     flightService.deleteFlight(id)
-    Redirect(routes.FlightController.index)
+    Redirect(routes.HomeController.index())
   }
 
-  def addFlight: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.addFlight(flightService.getFlights, flightService.getAirports, flightService.getPlanes))
-  }
 
   def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     implicit val ec: ExecutionContext = ExecutionContext.global
@@ -49,11 +40,9 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
     )
 
     flightService.addFlight(newFlight).map { _ =>
-      Redirect(routes.FlightController.index)
+      Redirect(routes.HomeController.index())
     }
   }
-
-
 
 
 }

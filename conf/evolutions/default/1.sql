@@ -2,13 +2,13 @@
 
 
 CREATE TABLE planes (
-                        id INT PRIMARY KEY,
+                        id INT PRIMARY KEY AUTO_INCREMENT,
                         model VARCHAR(255),
                         capacity INT
 );
 
 CREATE TABLE airports (
-                          id INT PRIMARY KEY,
+                          id INT PRIMARY KEY AUTO_INCREMENT,
                           name VARCHAR(255),
                           code VARCHAR(3),
                           city VARCHAR(255),

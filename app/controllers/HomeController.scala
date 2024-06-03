@@ -3,13 +3,14 @@ package controllers
 import javax.inject._
 import play.api._
 import play.api.mvc._
+import services.{AirportService, FlightService, PlaneService}
 
 /**
  * This controller creates an `Action` to handle HTTP requests to the
  * application's home page.
  */
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents) extends BaseController {
+class HomeController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
   /**
    * Create an Action to render an HTML page.
@@ -18,7 +19,20 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents) e
    * will be called when the application receives a `GET` request with
    * a path of `/`.
    */
-  def index() = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index())
+  def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.flights(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
   }
+
+  def goToAddFlight(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.addFlight(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
+  }
+
+  def goToAddPlane(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.addPlane(planeService.getPlanes))
+  }
+
+  def goToAddAirport(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.addAirport(airportService.getAirports))
+  }
+
 }
