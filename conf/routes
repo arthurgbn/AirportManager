@@ -11,16 +11,22 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 # Flight routes
 GET /flights/addFlight  controllers.HomeController.goToAddFlight
++nocsrf
 POST /flights/:id  controllers.FlightController.delete(id: Long)
++nocsrf
 POST /flights controllers.FlightController.create
 
 # Airport routes
 GET /airports/addAirport  controllers.HomeController.goToAddAirport
++nocsrf
 POST /airports/:id  controllers.AirportController.delete(id: Long)
++nocsrf
 POST /airports controllers.AirportController.create
 
 # Plane routes
 GET /planes/addPlane  controllers.HomeController.goToAddPlane
++nocsrf
 POST /planes/:id  controllers.PlaneController.delete(id: Long)
++nocsrf
 POST /planes controllers.PlaneController.create
 
