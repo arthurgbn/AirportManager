@@ -25,7 +25,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, f
   }
 
   def flights: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.flights(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
+    Ok(views.html.flights(flightService.getFlights, airportService.getAirports, planeService.getPlanes, request))
   }
 
   def airports: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>

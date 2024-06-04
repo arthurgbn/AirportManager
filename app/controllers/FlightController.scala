@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class FlightController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService) extends BaseController {
+class FlightController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
 
   def delete(id: Long): Action[AnyContent] = Action {
@@ -44,5 +44,7 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
     }
   }
 
-
+  def sortedFlights(sortBy: String, column: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.index(flightService.getSortedFlights(sortBy, column), airportService.getAirports, planeService.getPlanes)).flashing(request.flash)
+  }
 }

@@ -15,7 +15,8 @@ GET /flights/addFlight  controllers.HomeController.goToAddFlight
 POST /flights/:id  controllers.FlightController.delete(id: Long)
 +nocsrf
 POST /flights controllers.FlightController.create
-
++nocsrf
+GET     /flights/sorted/:sortBy/:column     controllers.FlightController.sortedFlights(sortBy: String, column: String)
 # Airport routes
 GET /airports/addAirport  controllers.HomeController.goToAddAirport
 +nocsrf

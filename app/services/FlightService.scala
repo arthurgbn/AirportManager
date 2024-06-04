@@ -68,4 +68,28 @@ class FlightService @Inject()(db: Database) {
     }
   }
 
+  def getSortedFlights(sortBy: String, column: String): List[Flight] = {
+    val flights = getFlights
+    val airports = new AirportService(db).getAirports
+    val planes = new PlaneService(db).getPlanes
+    (sortBy, column) match {
+      case ("asc", "id") => flights.sortBy(_.id)
+      case ("desc", "id") => flights.sortBy(_.id).reverse
+      // more difficult to sort by airport name, because we need to join with the airport table to get the name
+      case ("asc", "departureAirport") => flights.sortBy(flight => airports.find(_.id == flight.departureAirportId).get.name)
+      case ("desc", "departureAirport") => flights.sortBy(flight => airports.find(_.id == flight.departureAirportId).get.name).reverse
+      case ("asc", "arrivalAirport") => flights.sortBy(flight => airports.find(_.id == flight.arrivalAirportId).get.name)
+      case ("desc", "arrivalAirport") => flights.sortBy(flight => airports.find(_.id == flight.arrivalAirportId).get.name).reverse
+      case ("asc", "departureTime") => flights.sortBy(_.departureTime)
+      case ("desc", "departureTime") => flights.sortBy(_.departureTime).reverse
+      case ("asc", "arrivalTime") => flights.sortBy(_.arrivalTime)
+      case ("desc", "arrivalTime") => flights.sortBy(_.arrivalTime).reverse
+      case ("asc", "plane") => flights.sortBy(flight => planes.find(_.id == flight.planeId).get.model)
+      case ("desc", "plane") => flights.sortBy(flight => planes.find(_.id == flight.planeId).get.model).reverse
+      case ("asc", "status") => flights.sortBy(_.status)
+      case ("desc", "status") => flights.sortBy(_.status).reverse
+      case _ => flights
+    }
+  }
+
 }

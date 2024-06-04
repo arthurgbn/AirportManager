@@ -1,21 +1,21 @@
 @import java.time.format.DateTimeFormatter
 
-@(flights: List[Flight], airports: List[Airport], planes: List[Plane])
+@(flights: List[Flight], airports: List[Airport], planes: List[Plane], request: RequestHeader)
 
 <table class="table">
     <thead>
         <tr>
-            <th>ID</th>
-            <th>Departure Airport</th>
-            <th>Arrival Airport</th>
-            <th>Departure Time</th>
-            <th>Arrival Time</th>
-            <th>Plane</th>
-            <th>Status</th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "id").url">ID</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "departureAirport").url">Departure Airport</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "arrivalAirport").url">Arrival Airport</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "departureTime").url">Departure Time</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "arrivalTime").url">Arrival Time</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "plane").url">Plane</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "status").url">Status</a></th>
             <th></th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="flightsTable">
         @for(flight <- flights) {
             <tr>
                 <td>@flight.id</td>
