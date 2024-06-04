@@ -2,6 +2,43 @@
 
 @(flights: List[Flight], airports: List[Airport], planes: List[Plane], request: RequestHeader)
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<div class="m-3">
+<form action="@routes.FlightController.filterFlights(None, None, None, None)" method="get" class="form-group">
+    <div class="row align-items-center">
+        <div class="col">
+            <label for="planeId" class="form-label">Plane:</label>
+            <select id="planeId" name="planeId" class="form-control">
+                <option value="">All</option>
+                @for(plane <- planes) {
+                    <option value="@plane.id">@plane.model</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label for="departureAirportId" class="form-label">Departure Airport:</label>
+            <select id="departureAirportId" name="departureAirportId" class="form-control">
+                <option value="">All</option>
+                @for(airport <- airports) {
+                    <option value="@airport.id">@airport.name</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label for="arrivalAirportId" class="form-label">Arrival Airport:</label>
+            <select id="arrivalAirportId" name="arrivalAirportId" class="form-control">
+                <option value="">All</option>
+                @for(airport <- airports) {
+                    <option value="@airport.id">@airport.name</option>
+                }
+            </select>
+        </div>
+        <div class="col align-self-end">
+            <input type="submit" value="Filter" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -21,8 +58,8 @@
                 <td>@flight.id</td>
                 <td>@airports.find(_.id == flight.departureAirportId).map(_.name).getOrElse("Unknown")</td>
                 <td>@airports.find(_.id == flight.arrivalAirportId).map(_.name).getOrElse("Unknown")</td>
-                <td>@flight.departureTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
-                <td>@flight.arrivalTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
+                <td>@flight.departureTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))</td>
+                <td>@flight.arrivalTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))</td>
                 <td>@planes.find(_.id == flight.planeId).map(_.model).getOrElse("Unknown")</td>
                 <td>@flight.status</td>
                 <td>
@@ -36,3 +73,5 @@
 </table>
 
 <a href="@routes.HomeController.goToAddFlight" class="btn btn-primary">Add Flight</a>
+
+</div>

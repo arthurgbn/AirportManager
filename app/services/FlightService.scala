@@ -92,4 +92,13 @@ class FlightService @Inject()(db: Database) {
     }
   }
 
+  def getFilteredFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String]): List[Flight] = {
+    getFlights.filter(flight =>
+      planeId.forall(_ == flight.planeId) &&
+        departureAirportId.forall(_ == flight.departureAirportId) &&
+        arrivalAirportId.forall(_ == flight.arrivalAirportId) &&
+        status.forall(_ == flight.status)
+    )
+  }
+
 }
