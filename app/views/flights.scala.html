@@ -40,23 +40,16 @@
         </div>
     </form>
 
-    <table class="table">
+    <table class="table" id="flightsTable">
         <thead>
             <tr>
-                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "id").url">
-                    ID</a></th>
-                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "departureAirport").url">
-                    Departure Airport</a></th>
-                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "arrivalAirport").url">
-                    Arrival Airport</a></th>
-                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "departureTime").url">
-                    Departure Time</a></th>
-                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "arrivalTime").url">
-                    Arrival Time</a></th>
-                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "plane").url">
-                    Plane</a></th>
-                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "status").url">
-                    Status</a></th>
+                <th data-column="id"><a href="#">ID</a></th>
+                <th data-column="departureAirport"><a href="#">Departure Airport</a></th>
+                <th data-column="arrivalAirport"><a href="#">Arrival Airport</a></th>
+                <th data-column="departureTime"><a href="#">Departure Time</a></th>
+                <th data-column="arrivalTime"><a href="#">Arrival Time</a></th>
+                <th data-column="plane"><a href="#">Plane</a></th>
+                <th data-column="status"><a href="#">Status</a></th>
                 <th></th>
             </tr>
         </thead>
@@ -83,3 +76,26 @@
     <a href="@routes.HomeController.goToAddFlight" class="btn btn-primary">Add Flight</a>
 
 </div>
+
+<script>
+    // Sort flights list
+    document.querySelectorAll('#flightsTable th').forEach(title => {
+        title.addEventListener('click', evt => {
+            const table = title.closest('table')
+            const index_column = Array.prototype.indexOf.call(title.parentElement.children, title);
+            const direction = title.classList.contains('ascending') ? -1 : 1;
+            console.log(direction)
+            const rows = Array.from(table.querySelectorAll('tr')).slice(1);
+            if (title.dataset.column === 'id' || title.dataset.column === 'departureTime' || title.dataset.column === 'arrivalTime') {
+                rows.sort((a, b) => direction * (parseInt(a.children[index_column].textContent) - parseInt(b.children[index_column].textContent)));
+            } else {
+                rows.sort((a, b) => direction * a.children[index_column].textContent.localeCompare(b.children[index_column].textContent));
+            }
+            rows.forEach(row => table.appendChild(row));
+            table.querySelectorAll('th').forEach(title => title.classList.remove('ascending', 'descending'));
+            console.log(direction === 1 ? 'ascending' : 'descending')
+            title.classList.add(direction === 1 ? 'ascending' : 'descending');
+        });
+    })
+</script>
+
