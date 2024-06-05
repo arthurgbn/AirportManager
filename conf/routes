@@ -9,7 +9,29 @@ GET     /                           controllers.HomeController.index()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
-GET  /flights  controllers.FlightController.index
+# Flight routes
+GET /flights/addFlight  controllers.HomeController.goToAddFlight
++nocsrf
 POST /flights/:id  controllers.FlightController.delete(id: Long)
-GET /flights/addFlight  controllers.FlightController.addFlight
++nocsrf
 POST /flights controllers.FlightController.create
++nocsrf
+GET     /:sortBy/:column     controllers.FlightController.sortedFlights(sortBy: String, column: String)
++nocsrf
+GET     /filter     controllers.FlightController.filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String])
+
+
+# Airport routes
+GET /airports/addAirport  controllers.HomeController.goToAddAirport
++nocsrf
+POST /airports/:id  controllers.AirportController.delete(id: Long)
++nocsrf
+POST /airports controllers.AirportController.create
+
+# Plane routes
+GET /planes/addPlane  controllers.HomeController.goToAddPlane
++nocsrf
+POST /planes/:id  controllers.PlaneController.delete(id: Long)
++nocsrf
+POST /planes controllers.PlaneController.create
+

@@ -5,7 +5,8 @@
 @main("Add Flight") {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <a href="@routes.FlightController.index" class="btn btn-primary">Back</a>
+    <a href="@routes.HomeController.index" class="btn btn-primary">Back</a>
+
 
     <div class="container">
         <h1>Add Flight</h1>
@@ -28,11 +29,11 @@
         </div>
         <div class="form-group">
             <label for="departureTime">Departure Time</label>
-            <input type="datetime-local" class="form-control" id="departureTime" name="departureTime" required>
+            <input type="datetime-local" class="form-control" id="departureTime" name="departureTime" value="@java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))" required>
         </div>
         <div class="form-group">
             <label for="arrivalTime">Arrival Time</label>
-            <input type="datetime-local" class="form-control" id="arrivalTime" name="arrivalTime" required>
+            <input type="datetime-local" class="form-control" id="arrivalTime" name="arrivalTime" value="@java.time.LocalDateTime.now().plusHours(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))" required>
         </div>
         <div class="form-group">
             <label for="plane">Plane</label>

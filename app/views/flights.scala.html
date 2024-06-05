@@ -1,44 +1,78 @@
 @import java.time.format.DateTimeFormatter
-@(flights: List[Flight], airports: List[Airport], planes: List[Plane])
 
-    @main("Flights") {
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-        <div class="container">
-            <h1>Flights</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Departure Airport</th>
-                        <th>Arrival Airport</th>
-                        <th>Departure Time</th>
-                        <th>Arrival Time</th>
-                        <th>Plane</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                @for(flight <- flights) {
-                    <tr>
-                        <td>@flight.id</td>
-                        <td>@airports.find(_.id == flight.departureAirportId).map(_.name).getOrElse("Unknown")</td>
-                        <td>@airports.find(_.id == flight.arrivalAirportId).map(_.name).getOrElse("Unknown")</td>
-                        <td>@flight.departureTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
-                        <td>@flight.arrivalTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)</td>
-                        <td>@planes.find(_.id == flight.planeId).map(_.model).getOrElse("Unknown")</td>
-                        <td>@flight.status</td>
-                        <td>
-                            <form action="@routes.FlightController.delete(flight.id)" method="post">
-                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+@(flights: List[Flight], airports: List[Airport], planes: List[Plane], request: RequestHeader)
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<div class="m-3">
+<form action="@routes.FlightController.filterFlights(None, None, None, None)" method="get" class="form-group">
+    <div class="row align-items-center">
+        <div class="col">
+            <label for="planeId" class="form-label">Plane:</label>
+            <select id="planeId" name="planeId" class="form-control">
+                <option value="">All</option>
+                @for(plane <- planes) {
+                    <option value="@plane.id">@plane.model</option>
                 }
-                </tbody>
-            </table>
-            <a href="@routes.FlightController.addFlight" class="btn btn-primary">Add Flight</a>
-
+            </select>
         </div>
-    }
+        <div class="col">
+            <label for="departureAirportId" class="form-label">Departure Airport:</label>
+            <select id="departureAirportId" name="departureAirportId" class="form-control">
+                <option value="">All</option>
+                @for(airport <- airports) {
+                    <option value="@airport.id">@airport.name</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label for="arrivalAirportId" class="form-label">Arrival Airport:</label>
+            <select id="arrivalAirportId" name="arrivalAirportId" class="form-control">
+                <option value="">All</option>
+                @for(airport <- airports) {
+                    <option value="@airport.id">@airport.name</option>
+                }
+            </select>
+        </div>
+        <div class="col align-self-end">
+            <input type="submit" value="Filter" class="btn btn-primary">
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "id").url">ID</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "departureAirport").url">Departure Airport</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "arrivalAirport").url">Arrival Airport</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "departureTime").url">Departure Time</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "arrivalTime").url">Arrival Time</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "plane").url">Plane</a></th>
+            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "status").url">Status</a></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="flightsTable">
+        @for(flight <- flights) {
+            <tr>
+                <td>@flight.id</td>
+                <td>@airports.find(_.id == flight.departureAirportId).map(_.name).getOrElse("Unknown")</td>
+                <td>@airports.find(_.id == flight.arrivalAirportId).map(_.name).getOrElse("Unknown")</td>
+                <td>@flight.departureTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))</td>
+                <td>@flight.arrivalTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))</td>
+                <td>@planes.find(_.id == flight.planeId).map(_.model).getOrElse("Unknown")</td>
+                <td>@flight.status</td>
+                <td>
+                    <form action="@routes.FlightController.delete(flight.id)" method="post">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@routes.HomeController.goToAddFlight" class="btn btn-primary">Add Flight</a>
+
+</div>

@@ -1,0 +1,34 @@
+
+@(airports: List[Airport])
+<div class="m-3">
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>City</th>
+            <th>Country</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for(airport <- airports) {
+            <tr>
+                <td>@airport.id</td>
+                <td>@airport.name</td>
+                <td>@airport.code</td>
+                <td>@airport.city</td>
+                <td>@airport.country</td>
+                <td>
+                    <form action="@routes.AirportController.delete(airport.id)" method="post" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@routes.HomeController.goToAddAirport" class="btn btn-primary">Add Airport</a>
+
+</div>
