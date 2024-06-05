@@ -1,10 +1,11 @@
 package services
 
-import anorm.{RowParser, SQL, ~}
 import anorm.SqlParser.{get, scalar}
+import anorm.{RowParser, SQL, ~}
 import com.google.inject.Inject
 import models.Plane
 import play.api.db.Database
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 import scala.language.postfixOps
@@ -13,10 +14,7 @@ import scala.language.postfixOps
 class PlaneService @Inject()(db: Database) {
 
   val simplePlane: RowParser[Plane] = {
-    get[Long]("id") ~
-      get[String]("model") ~
-      get[Int]("capacity") map {
-      case id ~ model ~ capacity => Plane(id, model, capacity)
+    get[Long]("id") ~ get[String]("model") ~ get[Int]("capacity") map { case id ~ model ~ capacity => Plane(id, model, capacity)
     }
   }
 
@@ -35,9 +33,7 @@ class PlaneService @Inject()(db: Database) {
   // delete a plane by id from the database if it exists and it is not used in any flight
   def deletePlane(id: Long): Boolean = {
     db.withConnection { implicit connection =>
-      val updateCount = SQL("DELETE FROM planes WHERE id = {id} AND id NOT IN (SELECT plane_id FROM flights)")
-        .on("id" -> id)
-        .executeUpdate()
+      val updateCount = SQL("DELETE FROM planes WHERE id = {id} AND id NOT IN (SELECT plane_id FROM flights)").on("id" -> id).executeUpdate()
       updateCount > 0
     }
   }
@@ -50,11 +46,7 @@ class PlaneService @Inject()(db: Database) {
           """
           INSERT INTO planes (model, capacity)
           VALUES ({model}, {capacity})
-          """
-        ).on(
-          "model" -> model,
-          "capacity" -> capacity
-        ).executeInsert(scalar[Long].single)
+          """).on("model" -> model, "capacity" -> capacity).executeInsert(scalar[Long].single)
       }
     }
   }

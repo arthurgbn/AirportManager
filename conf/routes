@@ -16,9 +16,9 @@ POST /flights/:id  controllers.FlightController.delete(id: Long)
 +nocsrf
 POST /flights controllers.FlightController.create
 +nocsrf
-GET     /:sortBy/:column     controllers.FlightController.sortedFlights(sortBy: String, column: String)
+GET     /flights/:sortBy/:column     controllers.FlightController.sortedFlights(sortBy: String, column: String)
 +nocsrf
-GET     /filter     controllers.FlightController.filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String])
+GET     /flights/filter     controllers.FlightController.filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String])
 
 
 # Airport routes
