@@ -34,10 +34,6 @@ import scala.concurrent.ExecutionContext
     }
   }
 
-  def sortedFlights(sortBy: String, column: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index(flightService.getSortedFlights(sortBy, column), airportService.getAirports, planeService.getPlanes)).flashing(request.flash)
-  }
-
   def filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String]): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index(flightService.getFilteredFlights(planeId, departureAirportId, arrivalAirportId, status), airportService.getAirports, planeService.getPlanes)).flashing(request.flash)
   }

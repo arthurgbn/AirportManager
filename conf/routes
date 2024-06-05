@@ -16,8 +16,6 @@ POST /flights/:id  controllers.FlightController.delete(id: Long)
 +nocsrf
 POST /flights controllers.FlightController.create
 +nocsrf
-GET     /flights/:sortBy/:column     controllers.FlightController.sortedFlights(sortBy: String, column: String)
-+nocsrf
 GET     /flights/filter     controllers.FlightController.filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String])
 
 
@@ -34,4 +32,14 @@ GET /planes/addPlane  controllers.HomeController.goToAddPlane
 POST /planes/:id  controllers.PlaneController.delete(id: Long)
 +nocsrf
 POST /planes controllers.PlaneController.create
+
+
+# User routes
++nocsrf
+ GET  /login controllers.HomeController.logout
+# Authentification //controllers.AuthentificationController.authentification
++nocsrf
+POST /authentication controllers.AuthenticationController.authentication
+
+
 

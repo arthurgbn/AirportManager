@@ -35,4 +35,8 @@ import javax.inject._
     Ok(views.html.planes(planeService.getPlanes))
   }
 
+  def logout: Action[AnyContent] = Action { implicit request: Request[AnyContent] => //@()(implicit flash: play.api.mvc.Flash)
+    Ok(views.html.login()).withNewSession.flashing("success" -> "You've been logged out")
+  }
+
 }
