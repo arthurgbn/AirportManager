@@ -1,29 +1,29 @@
-@(planes : List[Plane])
+@(planes: List[Plane])
 <div class="m-3">
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Model</th>
-            <th>Capacity</th>
-        </tr>
-    </thead>
-    <tbody>
-        @for(plane <- planes) {
+    <table class="table">
+        <thead>
             <tr>
-                <td>@plane.id</td>
-                <td>@plane.model</td>
-                <td>@plane.capacity</td>
-                <td>
-                    <form action="@routes.PlaneController.delete(plane.id)" method="post" style="display: inline;">
-                        <button type="submit" class="btn btn-danger">Delete</button>
-                    </form>
+                <th>ID</th>
+                <th>Model</th>
+                <th>Capacity</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @for(plane <- planes) {
+                <tr>
+                    <td>@plane.id</td>
+                    <td>@plane.model</td>
+                    <td>@plane.capacity</td>
+                    <td>
+                        <form action="@routes.PlaneController.delete(plane.id)" method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                </tr>
+            }
+        </tbody>
+    </table>
 
 
-<a href="@routes.HomeController.goToAddPlane" class="btn btn-primary">Add Plane</a>
+    <a href="@routes.HomeController.goToAddPlane" class="btn btn-primary">Add Plane</a>
 
 </div>

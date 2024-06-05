@@ -1,12 +1,11 @@
 package controllers
 
-import javax.inject._
-import play.api._
 import play.api.mvc._
 import services.{AirportService, FlightService, PlaneService}
 
-@Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
+import javax.inject._
+
+@Singleton class HomeController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
   def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes)).flashing(request.flash)

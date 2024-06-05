@@ -1,17 +1,15 @@
 package controllers
 
-import models.{Airport, Flight, Plane}
-
-import javax.inject._
+import models.Flight
 import play.api.mvc._
 import services.{AirportService, FlightService, PlaneService}
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import scala.concurrent.{ExecutionContext, Future}
+import javax.inject._
+import scala.concurrent.ExecutionContext
 
-@Singleton
-class FlightController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
+@Singleton class FlightController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
 
   def delete(id: Long): Action[AnyContent] = Action {
@@ -29,15 +27,7 @@ class FlightController @Inject()(val controllerComponents: ControllerComponents,
     val arrivalTime = request.body.asFormUrlEncoded.get("arrivalTime").head
     val planeId = request.body.asFormUrlEncoded.get("plane").head.toLong
 
-    val newFlight = Flight(
-      id = 0L,
-      departureAirportId = departureAirportId,
-      arrivalAirportId = arrivalAirportId,
-      departureTime = LocalDateTime.parse(departureTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")),
-      arrivalTime = LocalDateTime.parse(arrivalTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")),
-      planeId = planeId,
-      status = "Scheduled"
-    )
+    val newFlight = Flight(id = 0L, departureAirportId = departureAirportId, arrivalAirportId = arrivalAirportId, departureTime = LocalDateTime.parse(departureTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), arrivalTime = LocalDateTime.parse(arrivalTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), planeId = planeId, status = "Scheduled")
 
     flightService.addFlight(newFlight).map { _ =>
       Redirect(routes.HomeController.index())

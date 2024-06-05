@@ -5,55 +5,62 @@
 
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <div class="m-3">
-<form action="@routes.FlightController.filterFlights(None, None, None, None)" method="get" class="form-group">
-    <div class="row align-items-center">
-        <div class="col">
-            <label for="planeId" class="form-label">Plane:</label>
-            <select id="planeId" name="planeId" class="form-control">
-                <option value="">All</option>
-                @for(plane <- planes) {
-                    <option value="@plane.id">@plane.model</option>
-                }
-            </select>
+    <form action="@routes.FlightController.filterFlights(None, None, None, None)" method="get" class="form-group">
+        <div class="row align-items-center">
+            <div class="col">
+                <label for="planeId" class="form-label">Plane:</label>
+                <select id="planeId" name="planeId" class="form-control">
+                    <option value="">All</option>
+                    @for(plane <- planes) {
+                        <option value="@plane.id">@plane.model</option>
+                    }
+                </select>
+            </div>
+            <div class="col">
+                <label for="departureAirportId" class="form-label">Departure Airport:</label>
+                <select id="departureAirportId" name="departureAirportId" class="form-control">
+                    <option value="">All</option>
+                    @for(airport <- airports) {
+                        <option value="@airport.id">@airport.name</option>
+                    }
+                </select>
+            </div>
+            <div class="col">
+                <label for="arrivalAirportId" class="form-label">Arrival Airport:</label>
+                <select id="arrivalAirportId" name="arrivalAirportId" class="form-control">
+                    <option value="">All</option>
+                    @for(airport <- airports) {
+                        <option value="@airport.id">@airport.name</option>
+                    }
+                </select>
+            </div>
+            <div class="col align-self-end">
+                <input type="submit" value="Filter" class="btn btn-primary">
+            </div>
         </div>
-        <div class="col">
-            <label for="departureAirportId" class="form-label">Departure Airport:</label>
-            <select id="departureAirportId" name="departureAirportId" class="form-control">
-                <option value="">All</option>
-                @for(airport <- airports) {
-                    <option value="@airport.id">@airport.name</option>
-                }
-            </select>
-        </div>
-        <div class="col">
-            <label for="arrivalAirportId" class="form-label">Arrival Airport:</label>
-            <select id="arrivalAirportId" name="arrivalAirportId" class="form-control">
-                <option value="">All</option>
-                @for(airport <- airports) {
-                    <option value="@airport.id">@airport.name</option>
-                }
-            </select>
-        </div>
-        <div class="col align-self-end">
-            <input type="submit" value="Filter" class="btn btn-primary">
-        </div>
-    </div>
-</form>
+    </form>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "id").url">ID</a></th>
-            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "departureAirport").url">Departure Airport</a></th>
-            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "arrivalAirport").url">Arrival Airport</a></th>
-            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "departureTime").url">Departure Time</a></th>
-            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "arrivalTime").url">Arrival Time</a></th>
-            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "plane").url">Plane</a></th>
-            <th><a href="@routes.FlightController.sortedFlights(if (request.uri.contains("desc")) "asc" else "desc", "status").url">Status</a></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="flightsTable">
+    <table class="table">
+        <thead>
+            <tr>
+                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "id").url">
+                    ID</a></th>
+                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "departureAirport").url">
+                    Departure Airport</a></th>
+                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "arrivalAirport").url">
+                    Arrival Airport</a></th>
+                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "departureTime").url">
+                    Departure Time</a></th>
+                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "arrivalTime").url">
+                    Arrival Time</a></th>
+                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "plane").url">
+                    Plane</a></th>
+                <th><a href="@routes.FlightController.sortedFlights(if(request.uri.contains("desc")) "asc" else "desc", "status").url">
+                    Status</a></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="flightsTable">
         @for(flight <- flights) {
             <tr>
                 <td>@flight.id</td>
@@ -70,9 +77,9 @@
                 </td>
             </tr>
         }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
-<a href="@routes.HomeController.goToAddFlight" class="btn btn-primary">Add Flight</a>
+    <a href="@routes.HomeController.goToAddFlight" class="btn btn-primary">Add Flight</a>
 
 </div>
