@@ -1,21 +1,24 @@
-@import java.time.format.DateTimeFormatter
-@import org.joda.time.format.DateTimeFormat
+
 
 @(flightsList: List[Flight], airportsList: List[Airport], planesList: List[Plane])(implicit request: RequestHeader, flash: play.api.mvc.Flash)
 
     @main("Index") {
-        @flash.get("error").map { message =>
-            <div class="alert alert-danger">
-                @message
-            </div>
-        }
+    @flash.get("error").map { message =>
+        <div id="error-message" class="alert alert-danger">
+            @message
+            <button id="close-button" type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    }
 
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+    <div class="container">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" id="flights-tab" data-toggle="tab" href="#flights" role="tab" aria-controls="flights" aria-selected="true">Flights</a>
@@ -27,6 +30,7 @@
                 <a class="nav-link" id="planes-tab" data-toggle="tab" href="#planes" role="tab" aria-controls="planes" aria-selected="false">Planes</a>
             </li>
         </ul>
+    </div>
 
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="flights" role="tabpanel" aria-labelledby="flights-tab">
@@ -39,5 +43,18 @@
             @planes(planesList)
             </div>
         </div>
+
+    <script>
+            window.onload = function() {
+                var errorMessage = document.getElementById('error-message');
+                var closeButton = document.getElementById('close-button');
+                if (errorMessage && closeButton) {
+                    closeButton.addEventListener('click', function() {
+                        errorMessage.style.display = 'none';
+                    });
+                }
+            };
+    </script>
+
 
     }
