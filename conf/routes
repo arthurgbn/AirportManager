@@ -1,45 +1,30 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # https://www.playframework.com/documentation/latest/ScalaRouting
-# ~~~~
-
-# An example controller showing a sample home page
-GET     /                           controllers.HomeController.index()
-
-# Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
-
-# Flight routes
-GET /flights/addFlight  controllers.HomeController.goToAddFlight
-+nocsrf
-POST /flights/:id  controllers.FlightController.delete(id: Long)
-+nocsrf
-POST /flights controllers.FlightController.create
-+nocsrf
-GET     /flights/filter     controllers.FlightController.filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String])
-
-
-# Airport routes
-GET /airports/addAirport  controllers.HomeController.goToAddAirport
-+nocsrf
-POST /airports/:id  controllers.AirportController.delete(id: Long)
-+nocsrf
-POST /airports controllers.AirportController.create
-
-# Plane routes
-GET /planes/addPlane  controllers.HomeController.goToAddPlane
-+nocsrf
-POST /planes/:id  controllers.PlaneController.delete(id: Long)
-+nocsrf
-POST /planes controllers.PlaneController.create
-
 
 # User routes
-+nocsrf
- GET  /login controllers.HomeController.logout
-# Authentification //controllers.AuthentificationController.authentification
-+nocsrf
-POST /authentication controllers.AuthenticationController.authentication
+GET     /login                   controllers.AuthController.showLoginForm
+POST    /login                   controllers.AuthController.login
+GET     /logout                  controllers.AuthController.logout
 
+# Home routes
+GET     /                       controllers.HomeController.index
 
+# Static assets
+GET     /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
 
+# Flight routes
+GET     /flights/addFlight      controllers.HomeController.goToAddFlight
+POST    /flights/:id            controllers.FlightController.delete(id: Long)
+POST    /flights                controllers.FlightController.create
+GET     /flights/filter         controllers.FlightController.filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String])
+
+# Airport routes
+GET     /airports/addAirport    controllers.HomeController.goToAddAirport
+POST    /airports/:id           controllers.AirportController.delete(id: Long)
+POST    /airports               controllers.AirportController.create
+
+# Plane routes
+GET     /planes/addPlane        controllers.HomeController.goToAddPlane
+POST    /planes/:id             controllers.PlaneController.delete(id: Long)
+POST    /planes                 controllers.PlaneController.create

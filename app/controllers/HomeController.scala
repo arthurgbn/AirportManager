@@ -1,42 +1,62 @@
-package controllers
+  package controllers
 
-import play.api.mvc._
-import services.{AirportService, FlightService, PlaneService}
+  import play.api.mvc._
+  import services.{AirportService, FlightService, PlaneService}
 
-import javax.inject._
+  import javax.inject._
 
-@Singleton class HomeController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
+  @Singleton class HomeController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
-  def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes)).flashing(request.flash)
+    def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+      request.session.get("username") match {
+        case Some(username) =>
+          Ok(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
+        case None =>
+          Redirect(routes.AuthController.showLoginForm)
+      }
+    }
+
+    def goToAddFlight(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+      request.session.get("username") match {
+        case Some(username) =>
+          Ok(views.html.addFlight(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
+        case None =>
+          Redirect(routes.AuthController.showLoginForm)
+      }
+    }
+
+    def goToAddPlane(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+      request.session.get("username") match {
+        case Some(username) =>
+          Ok(views.html.addPlane(planeService.getPlanes))
+        case None =>
+          Redirect(routes.AuthController.showLoginForm)
+      }
+    }
+
+    def goToAddAirport(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+      request.session.get("username") match {
+        case Some(username) =>
+          Ok(views.html.addAirport(airportService.getAirports))
+        case None =>
+          Redirect(routes.AuthController.showLoginForm)
+      }
+    }
+
+    def flights: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+      Ok(views.html.flights(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
+    }
+
+    def airports: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+      Ok(views.html.airports(airportService.getAirports))
+    }
+
+    def planes: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+      Ok(views.html.planes(planeService.getPlanes))
+    }
+
+    def logout = Action {
+      Redirect(routes.AuthController.showLoginForm).withNewSession.flashing("success" -> "You are now logged out.")
+    }
+
   }
-
-  def goToAddFlight(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.addFlight(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
-  }
-
-  def goToAddPlane(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.addPlane(planeService.getPlanes))
-  }
-
-  def goToAddAirport(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.addAirport(airportService.getAirports))
-  }
-
-  def flights: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.flights(flightService.getFlights, airportService.getAirports, planeService.getPlanes, request))
-  }
-
-  def airports: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.airports(airportService.getAirports))
-  }
-
-  def planes: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.planes(planeService.getPlanes))
-  }
-
-  def logout: Action[AnyContent] = Action { implicit request: Request[AnyContent] => //@()(implicit flash: play.api.mvc.Flash)
-    Ok(views.html.login()).withNewSession.flashing("success" -> "You've been logged out")
-  }
-
-}

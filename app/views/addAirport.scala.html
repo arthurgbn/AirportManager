@@ -1,6 +1,6 @@
 @import models.Airport
 
-@(airports: List[Airport])
+@(airports: List[Airport])(implicit request: RequestHeader)
 
 @main("Add Airport") {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -10,6 +10,7 @@
     <div class="container">
         <h1>Add Airport</h1>
         <form action="@routes.AirportController.create" method="post">
+            @helper.CSRF.formField
             <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" name="name" required>

@@ -1,7 +1,7 @@
 @import models.{Airport, Flight, Plane}
 
 @import java.time.format.DateTimeFormatter
-@(flights: List[Flight], airports: List[Airport], planes: List[Plane])
+@(flights: List[Flight], airports: List[Airport], planes: List[Plane])(implicit request: RequestHeader)
 
 @main("Add Flight") {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -12,6 +12,7 @@
     <div class="container">
         <h1>Add Flight</h1>
         <form action="@routes.FlightController.create" method="post">
+            @helper.CSRF.formField
             <div class="form-group">
                 <label for="departureAirport">Departure Airport</label>
                 <select class="form-control" id="departureAirport" name="departureAirport">

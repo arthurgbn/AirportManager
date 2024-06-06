@@ -28,7 +28,7 @@ CREATE TABLE flights (
                          FOREIGN KEY (plane_id) REFERENCES planes (id)
 );
 
-CREATE TABLE Users (
+CREATE TABLE users (
                       id INT PRIMARY KEY AUTO_INCREMENT,
                       username VARCHAR(255),
                       password VARCHAR(255)
