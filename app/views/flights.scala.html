@@ -84,7 +84,7 @@
         title.addEventListener('click', evt => {
             const table = title.closest('table')
             const index_column = Array.prototype.indexOf.call(title.parentElement.children, title);
-            const direction = title.classList.contains('ascending') ? -1 : 1;
+            const direction = title.classList.contains('descending') ? 1 : -1;
             console.log(direction)
             const rows = Array.from(table.querySelectorAll('tr')).slice(1);
             if (title.dataset.column === 'id' || title.dataset.column === 'departureTime' || title.dataset.column === 'arrivalTime') {
@@ -94,7 +94,6 @@
             }
             rows.forEach(row => table.appendChild(row));
             table.querySelectorAll('th').forEach(title => title.classList.remove('ascending', 'descending'));
-            console.log(direction === 1 ? 'ascending' : 'descending')
             title.classList.add(direction === 1 ? 'ascending' : 'descending');
         });
     })
