@@ -36,3 +36,15 @@
         </div>
     </div>
 }
+
+    <script>
+                window.onload = function () {
+                    var errorMessage = document.getElementById('error-message');
+                    var closeButton = document.getElementById('close-button');
+                    if (errorMessage && closeButton) {
+                        closeButton.addEventListener('click', function () {
+                            errorMessage.style.display = 'none';
+                        });
+                    }
+                };
+        </script>
