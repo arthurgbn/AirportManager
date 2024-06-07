@@ -94,7 +94,10 @@
             }
             rows.forEach(row => table.appendChild(row));
             table.querySelectorAll('th').forEach(title => title.classList.remove('ascending', 'descending'));
-            title.classList.add(direction === 1 ? 'ascending' : 'descending');
+            if (direction === 1)
+                title.classList.add('ascending');
+            else
+                title.classList.add('descending');
         });
     })
 </script>
