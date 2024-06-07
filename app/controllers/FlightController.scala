@@ -7,7 +7,8 @@ import services.{AirportService, FlightService, PlaneService}
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import javax.inject._
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
+import forms.NewFlightForm
 
 @Singleton class FlightController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
@@ -24,21 +25,37 @@ import scala.concurrent.ExecutionContext
 
 
 
+
+
   def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     implicit val ec: ExecutionContext = ExecutionContext.global
 
-    val departureAirportId = request.body.asFormUrlEncoded.get("departureAirport").head.toLong
-    val arrivalAirportId = request.body.asFormUrlEncoded.get("arrivalAirport").head.toLong
-    val departureTime = request.body.asFormUrlEncoded.get("departureTime").head
-    val arrivalTime = request.body.asFormUrlEncoded.get("arrivalTime").head
-    val planeId = request.body.asFormUrlEncoded.get("plane").head.toLong
+    NewFlightForm.form.bindFromRequest.fold(
+      error => Future.successful(BadRequest(views.html.addFlight(flightService.getFlights, airportService.getAirports, planeService.getPlanes))),
+      flightData => {
+        val departureAirportId = flightData.departureAirport.toLong
+        val arrivalAirportId = flightData.arrivalAirport.toLong
+        val departureTime = LocalDateTime.parse(flightData.departureTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))
+        val arrivalTime = LocalDateTime.parse(flightData.arrivalTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))
+        val planeId = flightData.plane.toLong
 
-    val newFlight = Flight(id = 0L, departureAirportId = departureAirportId, arrivalAirportId = arrivalAirportId, departureTime = LocalDateTime.parse(departureTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), arrivalTime = LocalDateTime.parse(arrivalTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), planeId = planeId, status = "Scheduled")
+        val newFlight = Flight(
+          id = 0L,
+          departureAirportId = departureAirportId,
+          arrivalAirportId = arrivalAirportId,
+          departureTime = departureTime,
+          arrivalTime = arrivalTime,
+          planeId = planeId,
+          status = "Scheduled"
+        )
 
-    flightService.addFlight(newFlight).map { _ =>
-      Redirect(routes.HomeController.index)
-    }
+        flightService.addFlight(newFlight).map { _ =>
+          Redirect(routes.HomeController.index)
+        }
+      }
+    )
   }
+
 
   def filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String]): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.index(flightService.getFilteredFlights(planeId, departureAirportId, arrivalAirportId, status), airportService.getAirports, planeService.getPlanes)).flashing(request.flash)

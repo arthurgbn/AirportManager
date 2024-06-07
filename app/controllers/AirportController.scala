@@ -4,7 +4,8 @@ import play.api.mvc._
 import services.AirportService
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
+import scala.concurrent.{ExecutionContext, Future}
+import forms.NewAirportForm
 
 class AirportController @Inject()(val controllerComponents: ControllerComponents, airportService: AirportService) extends BaseController {
 
@@ -20,14 +21,19 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
   def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     implicit val ec: ExecutionContext = ExecutionContext.global
 
-    val name = request.body.asFormUrlEncoded.get("name").head
-    val city = request.body.asFormUrlEncoded.get("city").head
-    val country = request.body.asFormUrlEncoded.get("country").head
-    val code = request.body.asFormUrlEncoded.get("code").head
+    NewAirportForm.form.bindFromRequest.fold(
+      error => Future.successful(BadRequest(views.html.addAirport(airportService.getAirports)))
+      ,
+      airportData => {
+        val name = airportData.name
+        val city = airportData.city
+        val country = airportData.country
+        val code = airportData.code
 
-    airportService.addAirport(name, code, city, country).map { _ =>
-      Redirect(routes.HomeController.index)
-
-    }
+        airportService.addAirport(name, code, city, country).map { _ =>
+          Redirect(routes.HomeController.index)
+        }
+      }
+    )
   }
 }
