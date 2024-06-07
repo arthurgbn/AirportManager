@@ -1,40 +1,47 @@
-// services/UserService.scala
 package services
 
-import anorm.SqlParser.{get, scalar}
+import anorm.SqlParser.{get, long, str}
 import anorm.{SQL, ~}
 import com.google.inject.Inject
+import play.silhouette.api.LoginInfo
+import play.silhouette.api.services.IdentityService
 import models.User
 import play.api.db.Database
 
-class UserService @Inject()(db: Database) {
+import scala.concurrent.{ExecutionContext, Future}
 
-  val simple = {
-    get[Long]("id") ~ get[String]("username") ~ get[String]("password") map {
-      case id ~ username ~ password => User(id, username, password)
+
+
+class UserService @Inject()(db: Database)(implicit ec: ExecutionContext) extends IdentityService[User] {
+
+
+  private val simple = {
+    get[Long]("users.id") ~
+      get[String]("users.name") ~
+      get[String]("users.email") map {
+      case id ~ name ~ email => User(id, name, email)
     }
   }
 
-  def findByUsername(username: String): Option[User] = {
+  def retrieve(loginInfo: LoginInfo): Future[Option[User]] = Future {
     db.withConnection { implicit connection =>
-      SQL("SELECT * FROM users WHERE username = {username}")
-        .on("username" -> username)
-        .as(simple.singleOpt)
+      SQL("SELECT * FROM users WHERE email = {email}").on("email" -> loginInfo.providerKey).as(simple.singleOpt)
     }
   }
 
-  def authenticate(username: String, password: String): Option[User] = {
-    findByUsername(username).filter(user => user.password == password)
-  }
-
-  def createUser(user: User): Long = {
+  def save(user: User): Future[User] = Future {
     db.withConnection { implicit connection =>
       SQL(
         """
-          INSERT INTO users (username, password)
-          VALUES ({username}, {password})
+          INSERT INTO users(name, email)
+          VALUES ({name}, {email})
         """
-      ).on("username" -> user.username, "password" -> user.password).executeInsert(scalar[Long].single)
+      ).on(
+        "name" -> user.name,
+        "email" -> user.email
+      ).executeInsert()
+      user
     }
   }
+
 }

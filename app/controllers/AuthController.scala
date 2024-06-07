@@ -1,14 +1,26 @@
 package controllers
 
 import forms.LoginForm
+import play.api.i18n.I18nSupport
 
 import javax.inject._
 import play.api.mvc._
+import play.silhouette.api.Silhouette
+import play.silhouette.impl.providers.CredentialsProvider
 import services.UserService
+import utils.DefaultEnv
+
+import scala.concurrent.ExecutionContext
 
 
 @Singleton
-class AuthController @Inject()(cc: ControllerComponents, userService: UserService) extends AbstractController(cc) {
+class AuthController @Inject()(credentialsProvider: CredentialsProvider,
+                               userService: UserService,
+                               components: ControllerComponents,
+                               silhouette: Silhouette[DefaultEnv],
+                               loginTemplate: views.html.login)
+                              (implicit ec: ExecutionContext)
+  extends AbstractController(components) with I18nSupport {
 
 
 
@@ -17,20 +29,7 @@ class AuthController @Inject()(cc: ControllerComponents, userService: UserServic
   }
 
   def login = Action { implicit request: Request[AnyContent] =>
-    LoginForm.form.bindFromRequest.fold(
-      errors => BadRequest(views.html.login()),
-      userData => {
-        val username = userData.username
-        val password = userData.password
-        userService.authenticate(username, password) match {
-          case Some(user) =>
-            val result = Redirect(routes.HomeController.index).withSession("userId" -> user.id.toString, "username" -> user.username)
-            result
-          case None =>
-            Redirect(routes.AuthController.showLoginForm).flashing("error" -> "Invalid username or password")
-        }
-      }
-    )
+
   }
 
 

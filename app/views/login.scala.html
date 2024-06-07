@@ -1,5 +1,7 @@
 @()(implicit request: RequestHeader, flash: play.api.mvc.Flash)
 
+
+
 @main("Login") {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     @flash.get("error").map { message =>

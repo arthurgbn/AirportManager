@@ -29,9 +29,16 @@ CREATE TABLE flights (
 );
 
 CREATE TABLE users (
-                      id INT PRIMARY KEY AUTO_INCREMENT,
-                      username VARCHAR(255),
-                      password VARCHAR(255)
+                         id    INT PRIMARY KEY  AUTO_INCREMENT,
+                         name  VARCHAR(255),
+                         email VARCHAR(255) UNIQUE
+);
+
+CREATE TABLE passwords (
+                             hash  VARCHAR(255),
+                             password VARCHAR(255),
+                             email VARCHAR(255) UNIQUE,
+                                FOREIGN KEY (email) REFERENCES users (email)
 );
 
 # --- !Downs
