@@ -11,9 +11,9 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
   def delete(id: Long): Action[AnyContent] = Action {
     val success = airportService.deleteAirport(id)
     if (success) {
-      Redirect(routes.HomeController.index())
+      Redirect(routes.HomeController.index)
     } else {
-      Redirect(routes.HomeController.index()).flashing("error" -> "Cannot delete airport because it is used in a flight.")
+      Redirect(routes.HomeController.index).flashing("error" -> "Cannot delete airport because it is used in a flight.")
     }
   }
 
@@ -26,7 +26,7 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
     val code = request.body.asFormUrlEncoded.get("code").head
 
     airportService.addAirport(name, code, city, country).map { _ =>
-      Redirect(routes.HomeController.index())
+      Redirect(routes.HomeController.index)
 
     }
   }

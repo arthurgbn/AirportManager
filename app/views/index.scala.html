@@ -1,65 +1,79 @@
 @(flightsList: List[Flight], airportsList: List[Airport], planesList: List[Plane])(implicit request: RequestHeader, flash: play.api.mvc.Flash)
 
-@main("Index") {
-    @flash.get("error").map { message =>
-        <div id="error-message" class="alert alert-danger">
-            @message
-            <button id="close-button" type="button" class="close" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+    @main("Index") {
+        @flash.get("error").map { message =>
+            <div id="error-message" class="alert alert-danger">
+                @message
+                <button id="close-button" type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+
+        @flash.get("success").map { message =>
+            <div id="success-message" class="alert alert-success">
+                @message
+                <button id="close-button" type="button" class="close" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/">
+                <img src="@routes.Assets.versioned("images/lunatech_logo.jpeg")" width="30" height="30" class="d-inline-block align-top" alt="">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="nav nav-tabs " id="myTab" role="tablist">
+                    <li class="nav-item active">
+                        <a class="nav-link active" id="flights-tab" data-toggle="tab" href="#flights" aria-controls="flights" aria-selected="true">
+                            Flights</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="airports-tab" data-toggle="tab" href="#airports" role="tab" aria-controls="airports" aria-selected="false">
+                            Airports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="planes-tab" data-toggle="tab" href="#planes" role="tab" aria-controls="planes" aria-selected="false">
+                            Planes</a>
+                    </li>
+                    <li class="nav-item ml-auto">
+                        <a class="nav-link" href="@routes.AuthController.logout">Sign out</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="flights" role="tabpanel" aria-labelledby="flights-tab">
+            @flights(flightsList, airportsList, planesList)
+            </div>
+            <div class="tab-pane fade" id="airports" role="tabpanel" aria-labelledby="airports-tab">
+            @airports(airportsList)
+            </div>
+            <div class="tab-pane fade" id="planes" role="tabpanel" aria-labelledby="planes-tab">
+            @planes(planesList)
+            </div>
         </div>
+
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">© 2024 Lunatech Labs</span>
+            </div>
+        </footer>
+        <script>
+                window.onload = function () {
+                    var errorMessage = document.getElementById('error-message');
+                    var closeButton = document.getElementById('close-button');
+                    if (errorMessage && closeButton) {
+                        closeButton.addEventListener('click', function () {
+                            errorMessage.style.display = 'none';
+                        });
+                    }
+                };
+        </script>
     }
-
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">
-            <img src="@routes.Assets.versioned("images/lunatech_logo.jpeg")" width="30" height="30" class="d-inline-block align-top" alt="">
-        </a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="nav nav-tabs " id="myTab" role="tablist">
-                <li class="nav-item active">
-                    <a class="nav-link active" id="flights-tab" data-toggle="tab" href="#flights" aria-controls="flights" aria-selected="true">
-                        Flights</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="airports-tab" data-toggle="tab" href="#airports" role="tab" aria-controls="airports" aria-selected="false">
-                        Airports</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="planes-tab" data-toggle="tab" href="#planes" role="tab" aria-controls="planes" aria-selected="false">
-                        Planes</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="flights" role="tabpanel" aria-labelledby="flights-tab">
-        @flights(flightsList, airportsList, planesList, request)
-        </div>
-        <div class="tab-pane fade" id="airports" role="tabpanel" aria-labelledby="airports-tab">
-        @airports(airportsList)
-        </div>
-        <div class="tab-pane fade" id="planes" role="tabpanel" aria-labelledby="planes-tab">
-        @planes(planesList)
-        </div>
-    </div>
-
-    <script>
-            window.onload = function () {
-                var errorMessage = document.getElementById('error-message');
-                var closeButton = document.getElementById('close-button');
-                if (errorMessage && closeButton) {
-                    closeButton.addEventListener('click', function () {
-                        errorMessage.style.display = 'none';
-                    });
-                }
-            };
-    </script>
-
-
-}

@@ -12,10 +12,16 @@ import scala.concurrent.ExecutionContext
 @Singleton class FlightController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
 
-  def delete(id: Long): Action[AnyContent] = Action {
-    flightService.deleteFlight(id)
-    Redirect(routes.HomeController.index())
+  def delete(id: Long): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+    request.session.get("username") match {
+      case Some(_) =>
+        flightService.deleteFlight(id)
+        Redirect(routes.HomeController.index)
+      case None =>
+        Redirect(routes.AuthController.showLoginForm).flashing("error" -> "You must be authenticated to delete a flight.")
+    }
   }
+
 
 
   def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
@@ -30,12 +36,8 @@ import scala.concurrent.ExecutionContext
     val newFlight = Flight(id = 0L, departureAirportId = departureAirportId, arrivalAirportId = arrivalAirportId, departureTime = LocalDateTime.parse(departureTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), arrivalTime = LocalDateTime.parse(arrivalTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")), planeId = planeId, status = "Scheduled")
 
     flightService.addFlight(newFlight).map { _ =>
-      Redirect(routes.HomeController.index())
+      Redirect(routes.HomeController.index)
     }
-  }
-
-  def sortedFlights(sortBy: String, column: String): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.index(flightService.getSortedFlights(sortBy, column), airportService.getAirports, planeService.getPlanes)).flashing(request.flash)
   }
 
   def filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String]): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
