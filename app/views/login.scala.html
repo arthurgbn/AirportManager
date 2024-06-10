@@ -1,7 +1,4 @@
-@()(implicit request: RequestHeader, flash: play.api.mvc.Flash)
-
-
-
+@(loginForm: Form[forms.LoginForm.Data])(implicit request: RequestHeader, flash: play.api.mvc.Flash)
 @main("Login") {
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     @flash.get("error").map { message =>
@@ -13,13 +10,10 @@
         </div>
     }
     <div class="container py-5 h-100">
-
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="card shadow-2-strong" style="border-radius: 1rem;">
-
                 <div class="card-body p-5 text-center">
                     <h3 class="mb-5">Sign in</h3>
-
                     <form action="@routes.AuthController.login" method="POST">
                         @helper.CSRF.formField
                         <div data-mdb-input-init class="form-outline mb-4">
@@ -31,7 +25,8 @@
                             <label for="password" class="form-label"></label>
                         </div>
                         <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
-                            Sign in</button>
+                            Sign in
+                        </button>
                     </form>
                 </div>
             </div>
@@ -39,14 +34,14 @@
     </div>
 }
 
-    <script>
-                window.onload = function () {
-                    var errorMessage = document.getElementById('error-message');
-                    var closeButton = document.getElementById('close-button');
-                    if (errorMessage && closeButton) {
-                        closeButton.addEventListener('click', function () {
-                            errorMessage.style.display = 'none';
-                        });
-                    }
-                };
-        </script>
+<script>
+  window.onload = function () {
+      var errorMessage = document.getElementById('error-message');
+      var closeButton = document.getElementById('close-button');
+      if (errorMessage && closeButton) {
+          closeButton.addEventListener('click', function () {
+              errorMessage.style.display = 'none';
+          });
+      }
+  };
+</script>

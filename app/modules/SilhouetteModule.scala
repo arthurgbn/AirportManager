@@ -1,23 +1,31 @@
 package modules
 
-
-import com.google.inject.AbstractModule
+import com.google.inject.{AbstractModule, Provides}
 import net.codingwell.scalaguice.ScalaModule
-import play.silhouette.api.util.{CacheLayer, Clock, FingerprintGenerator, IDGenerator, PasswordHasher, PasswordInfo}
-import play.silhouette.api.{EventBus, Silhouette, SilhouetteProvider}
-import play.silhouette.impl.util.{DefaultFingerprintGenerator, PlayCacheLayer, SecureRandomIDGenerator}
+import play.api.Configuration
+import play.api.mvc.{CookieHeaderEncoding, SessionCookieBaker}
+import play.silhouette.api.repositories.AuthInfoRepository
+import play.silhouette.api.services.IdentityService
+import play.silhouette.api.util._
+import play.silhouette.api.{EventBus, Silhouette, SilhouetteProvider, Environment => SilhouetteEnvironment}
+import models.User
+import play.silhouette.api.crypto.AuthenticatorEncoder
+import play.silhouette.impl.authenticators.{SessionAuthenticatorService, SessionAuthenticatorSettings}
+import play.silhouette.impl.providers._
+import play.silhouette.impl.util._
 import play.silhouette.password.BCryptPasswordHasher
 import play.silhouette.persistence.daos.DelegableAuthInfoDAO
+import play.silhouette.persistence.repositories.DelegableAuthInfoRepository
 import services.{PasswordService, UserService}
 import utils.DefaultEnv
+
 import scala.concurrent.ExecutionContext.Implicits.global
 
-
-class SilhouetteModule extends AbstractModule with ScalaModule {
+class SilhouetteModule extends AbstractModule with ScalaModule  {
   override def configure(): Unit = {
     bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
     bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordService]
-    bind[CacheLayer].to[PlayCacheLayer]
+    bind[IdentityService[User]].to[UserService]
     bind[PasswordHasher].toInstance(new BCryptPasswordHasher)
     bind[FingerprintGenerator].toInstance(new DefaultFingerprintGenerator(includeRemoteAddress = false))
     bind[EventBus].toInstance(EventBus())
@@ -25,8 +33,30 @@ class SilhouetteModule extends AbstractModule with ScalaModule {
     bind[IDGenerator].toInstance(new SecureRandomIDGenerator())
   }
 
+  @Provides def provideEnvironment(userService: UserService, authenticatorService: SessionAuthenticatorService, eventBus: EventBus): SilhouetteEnvironment[DefaultEnv] = {
+    SilhouetteEnvironment[DefaultEnv](userService, authenticatorService, Seq(), eventBus)
+  }
+
+  @Provides
+  def provideAuthenticatorService(
+                                   fingerprintGenerator: FingerprintGenerator,
+                                   authenticatorEncoder: AuthenticatorEncoder,
+                                   sessionCookieBaker: SessionCookieBaker,
+                                   clock: Clock
+                                 ): SessionAuthenticatorService = {
+    new SessionAuthenticatorService(SessionAuthenticatorSettings(), fingerprintGenerator, authenticatorEncoder, sessionCookieBaker, clock)
+  }
 
 
+  @Provides def provideAuthInfoRepository(passwordInfoDAO: DelegableAuthInfoDAO[PasswordInfo]): AuthInfoRepository = {
+    new DelegableAuthInfoRepository(passwordInfoDAO)
+  }
+
+  @Provides def provideCredentialsProvider(authInfoRepository: AuthInfoRepository, passwordHasherRegistry: PasswordHasherRegistry): CredentialsProvider = {
+    new CredentialsProvider(authInfoRepository, passwordHasherRegistry)
+  }
+
+  @Provides def providePasswordHasherRegistry(passwordHasher: PasswordHasher): PasswordHasherRegistry = {
+    new PasswordHasherRegistry(passwordHasher)
+  }
 }
-
-

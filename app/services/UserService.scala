@@ -12,7 +12,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 
-class UserService @Inject()(db: Database)(implicit ec: ExecutionContext) extends IdentityService[User] {
+class UserService @Inject()(db: Database)(implicit ec: ExecutionContext) extends  IdentityService[User] {
 
 
   private val simple = {
