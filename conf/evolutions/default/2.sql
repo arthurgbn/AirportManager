@@ -40,9 +40,11 @@ INSERT INTO flights (id, departure_airport_id, arrival_airport_id, departure_tim
 INSERT INTO flights (id, departure_airport_id, arrival_airport_id, departure_time, arrival_time, plane_id, status) VALUES (14, 6, 4, '2021-08-14 09:00:00', '2021-08-14 12:00:00', 1, 'Scheduled');
 
 
-INSERT INTO users (id, username, password) VALUES (1, 'admin', 'admin');
-INSERT INTO users (id, username, password) VALUES (2, 'user', 'user');
-INSERT INTO users (id, username, password) VALUES (3, 'test', 'test');
-INSERT INTO users (id, username, password) VALUES (4, 'test2', 'test2');
 
+INSERT INTO users (id, name, email) VALUES (1, 'John Doe', 'john.doe@test.fr');
+INSERT INTO users (id, name, email) VALUES (2, 'Jane Doe', 'jane.doe@test.fr');
+
+
+insert into passwords (hash, password, email, salt) values ('bcrypt', '$2a$12$qHm048CkXuTPYTTVF1AJaecIPlmTWA7befbykkr//nfJJcyPYIjxu', 'john.doe@test.fr');
+insert into passwords (hash, password, email, salt) values ('bcrypt', '$2a$12$qHm048CkXuTPYTTVF1AJaecIPlmTWA7befbykkr//nfJJcyPYIjxu', 'jane.doe@test.fr');
 # --- !Downs

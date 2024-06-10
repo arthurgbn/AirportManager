@@ -15,6 +15,7 @@ import services.UserService
 import utils.DefaultEnv
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
+import play.api.Logging
 
 @Singleton
 class AuthController @Inject()(
@@ -23,21 +24,18 @@ class AuthController @Inject()(
                                 userService: UserService,
                                 authInfoRepository: AuthInfoRepository,
                                 passwordHasherRegistry: PasswordHasherRegistry,
-                                components: ControllerComponents,
-                                loginTemplate: views.html.login
-                              )(implicit ec: ExecutionContext) extends AbstractController(components) with I18nSupport {
-
+                                components: ControllerComponents
+                              )(implicit ec: ExecutionContext) extends AbstractController(components) with I18nSupport with Logging {
 
   def showLoginForm = Action { implicit request: Request[AnyContent] =>
-    Ok(loginTemplate(LoginForm.form))
+    Ok(views.html.login())
   }
-
 
   def login = Action.async { implicit request: Request[AnyContent] =>
     LoginForm.form.bindFromRequest.fold(
-    formWithErrors => Future.successful(BadRequest(loginTemplate(formWithErrors))),
+      formWithErrors => Future.successful(BadRequest(views.html.login())),
       data => {
-        val credentials = Credentials(data.username, data.password)
+        val credentials = Credentials(data.email, data.password)
         credentialsProvider.authenticate(credentials).flatMap { loginInfo =>
           userService.retrieve(loginInfo).flatMap {
             case Some(user) =>
@@ -49,10 +47,13 @@ class AuthController @Inject()(
                 silhouette.env.eventBus.publish(LoginEvent(user, request))
                 result
               }
-            case None => Future.successful(Redirect(routes.AuthController.showLoginForm).flashing("error" -> "Username not found"))
+            case None =>
+              Future.successful(Redirect(routes.AuthController.showLoginForm).flashing("error" -> "Email not found"))
           }
         }.recover {
-          case _: ProviderException =>
+
+          case e: ProviderException =>
+            logger.error("Invalid credentials", e)
             Redirect(routes.AuthController.showLoginForm).flashing("error" -> "Invalid credentials")
         }
       }

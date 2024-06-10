@@ -1,6 +1,5 @@
 package services
 
-
 import javax.inject.Inject
 import play.api.db.Database
 import anorm.SqlParser.get
