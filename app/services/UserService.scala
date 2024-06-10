@@ -24,6 +24,7 @@ class UserService @Inject()(db: Database)(implicit ec: ExecutionContext) extends
   }
 
   def retrieve(loginInfo: LoginInfo): Future[Option[User]] = Future {
+    println("retrieve")
     db.withConnection { implicit connection =>
       SQL("SELECT * FROM users WHERE email = {email}").on("email" -> loginInfo.providerKey).as(simple.singleOpt)
     }

@@ -27,6 +27,7 @@ class SilhouetteModule(environment: Environment, configuration: Configuration) e
   override def configure(): Unit = {
     bind[Silhouette[DefaultEnv]].to[SilhouetteProvider[DefaultEnv]]
     bind[DelegableAuthInfoDAO[PasswordInfo]].to[PasswordService]
+    bind[IdentityService[User]].to[UserService]
     bind[CacheLayer].to[PlayCacheLayer]
     bind[IDGenerator].toInstance(new SecureRandomIDGenerator())
     bind[PasswordHasher].toInstance(new BCryptPasswordHasher)

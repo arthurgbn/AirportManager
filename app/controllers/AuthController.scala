@@ -35,10 +35,13 @@ class AuthController @Inject()(
     LoginForm.form.bindFromRequest.fold(
       formWithErrors => Future.successful(BadRequest(views.html.login())),
       data => {
+        println(data.email)
+        println(data.password)
         val credentials = Credentials(data.email, data.password)
         credentialsProvider.authenticate(credentials).flatMap { loginInfo =>
           userService.retrieve(loginInfo).flatMap {
             case Some(user) =>
+              println(s"User ${user.email} authenticated, creating session.")
               for {
                 authenticator <- silhouette.env.authenticatorService.create(loginInfo)
                 value <- silhouette.env.authenticatorService.init(authenticator)
@@ -48,11 +51,14 @@ class AuthController @Inject()(
                 result
               }
             case None =>
+              println("Email not found")
               Future.successful(Redirect(routes.AuthController.showLoginForm).flashing("error" -> "Email not found"))
           }
         }.recover {
 
           case e: ProviderException =>
+            println("Invalid credentials")
+
             logger.error("Invalid credentials", e)
             Redirect(routes.AuthController.showLoginForm).flashing("error" -> "Invalid credentials")
         }

@@ -22,12 +22,14 @@ class PasswordService  @Inject()(db: Database)(implicit ec: ExecutionContext) ex
 
   override val classTag: ClassTag[PasswordInfo] = scala.reflect.classTag[PasswordInfo]
 
-  override def find(loginInfo: LoginInfo): Future[Option[PasswordInfo]] =
+  override def find(loginInfo: LoginInfo): Future[Option[PasswordInfo]] = {
+    println("find")
     Future {
       db.withConnection { implicit connection =>
         SQL("SELECT * FROM passwords WHERE email = {email}").on("email" -> loginInfo.providerKey).as(simple.singleOpt)
       }
     }
+  }
 
   override def add(loginInfo: LoginInfo, authInfo: PasswordInfo): Future[PasswordInfo] =
     Future {
