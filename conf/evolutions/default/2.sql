@@ -45,6 +45,6 @@ INSERT INTO users (id, name, email) VALUES (1, 'John Doe', 'john.doe@test.fr');
 INSERT INTO users (id, name, email) VALUES (2, 'Jane Doe', 'jane.doe@test.fr');
 
 
-insert into passwords (hash, password, email, salt) values ('bcrypt', '$2a$12$qHm048CkXuTPYTTVF1AJaecIPlmTWA7befbykkr//nfJJcyPYIjxu', 'john.doe@test.fr');
-insert into passwords (hash, password, email, salt) values ('bcrypt', '$2a$12$qHm048CkXuTPYTTVF1AJaecIPlmTWA7befbykkr//nfJJcyPYIjxu', 'jane.doe@test.fr');
+insert into passwords (hash, password, email) values ('bcrypt', '$2a$12$qHm048CkXuTPYTTVF1AJaecIPlmTWA7befbykkr//nfJJcyPYIjxu', 'john.doe@test.fr');
+insert into passwords (hash, password, email) values ('bcrypt', '$2a$12$qHm048CkXuTPYTTVF1AJaecIPlmTWA7befbykkr//nfJJcyPYIjxu', 'jane.doe@test.fr');
 # --- !Downs
