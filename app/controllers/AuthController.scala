@@ -1,18 +1,20 @@
 package controllers
 
-import forms.LoginForm
+import forms.{LoginForm, SignUpForm}
+import models.User
 
 import javax.inject._
 import play.api.mvc._
 import play.api.i18n.I18nSupport
 import play.silhouette.api.actions.SecuredRequest
 import play.silhouette.api.exceptions.ProviderException
-import play.silhouette.api.{LoginEvent, Silhouette}
+import play.silhouette.api.{LoginEvent, LoginInfo, Silhouette}
 import play.silhouette.api.repositories.AuthInfoRepository
 import play.silhouette.impl.providers._
 import play.silhouette.api.util._
 import services.UserService
 import utils.DefaultEnv
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext
 import play.api.Logging
@@ -69,6 +71,30 @@ class AuthController @Inject()(
   def logout = silhouette.SecuredAction.async { implicit request: SecuredRequest[DefaultEnv, AnyContent] =>
     silhouette.env.authenticatorService.discard(request.authenticator, Redirect(routes.AuthController.showLoginForm))
   }
-}
 
-case class LoginData(email: String, password: String)
+  def showRegisterForm = Action { implicit request: Request[AnyContent] =>
+    Ok(views.html.signup())
+  }
+
+  def register = Action.async { implicit request: Request[AnyContent] =>
+    SignUpForm.form.bindFromRequest.fold(
+      formWithErrors => Future.successful(BadRequest(views.html.signup())),
+      data => {
+        val loginInfo = LoginInfo(CredentialsProvider.ID, data.email)
+        val authInfo = passwordHasherRegistry.current.hash(data.password)
+        val user = User(0, data.name, data.email)
+
+        for {
+          savedUser <- userService.save(user)
+          _ <- authInfoRepository.add(loginInfo, authInfo)
+          authenticator <- silhouette.env.authenticatorService.create(loginInfo)
+          value <- silhouette.env.authenticatorService.init(authenticator)
+          result <- silhouette.env.authenticatorService.embed(value, Redirect(routes.HomeController.index))
+        } yield {
+          silhouette.env.eventBus.publish(LoginEvent(savedUser, request))
+          result
+        }
+      }
+    )
+  }
+}

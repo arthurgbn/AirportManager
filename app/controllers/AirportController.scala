@@ -6,10 +6,12 @@ import services.AirportService
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import forms.NewAirportForm
+import play.silhouette.api.Silhouette
+import utils.DefaultEnv
 
-class AirportController @Inject()(val controllerComponents: ControllerComponents, airportService: AirportService) extends BaseController {
+class AirportController @Inject()(val controllerComponents: ControllerComponents,  silhouette: Silhouette[DefaultEnv], airportService: AirportService) extends BaseController {
 
-  def delete(id: Long): Action[AnyContent] = Action {
+  def delete(id: Long): Action[AnyContent] = silhouette.SecuredAction { implicit request =>
     val success = airportService.deleteAirport(id)
     if (success) {
       Redirect(routes.HomeController.index)
@@ -18,7 +20,7 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
     }
   }
 
-  def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+  def create: Action[AnyContent] = silhouette.SecuredAction.async { implicit request: Request[AnyContent] =>
     implicit val ec: ExecutionContext = ExecutionContext.global
 
     NewAirportForm.form.bindFromRequest.fold(

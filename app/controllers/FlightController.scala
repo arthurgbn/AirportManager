@@ -9,25 +9,18 @@ import java.time.format.DateTimeFormatter
 import javax.inject._
 import scala.concurrent.{ExecutionContext, Future}
 import forms.NewFlightForm
+import play.silhouette.api.Silhouette
+import utils.DefaultEnv
 
-@Singleton class FlightController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
+@Singleton class FlightController @Inject()(val controllerComponents: ControllerComponents,  silhouette: Silhouette[DefaultEnv], flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
 
-  def delete(id: Long): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-    request.session.get("username") match {
-      case Some(_) =>
-        flightService.deleteFlight(id)
-        Redirect(routes.HomeController.index)
-      case None =>
-        Redirect(routes.AuthController.showLoginForm).flashing("error" -> "You must be authenticated to delete a flight.")
-    }
+  def delete(id: Long): Action[AnyContent] = silhouette.SecuredAction { implicit request =>
+    flightService.deleteFlight(id)
+    Redirect(routes.HomeController.index)
   }
 
-
-
-
-
-  def create: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+  def create: Action[AnyContent] = silhouette.SecuredAction.async { implicit request: Request[AnyContent] =>
     implicit val ec: ExecutionContext = ExecutionContext.global
 
     NewFlightForm.form.bindFromRequest.fold(
@@ -56,8 +49,7 @@ import forms.NewFlightForm
     )
   }
 
-
-  def filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String]): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
+  def filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String]): Action[AnyContent] = silhouette.SecuredAction { implicit request =>
     Ok(views.html.index(flightService.getFilteredFlights(planeId, departureAirportId, arrivalAirportId, status), airportService.getAirports, planeService.getPlanes)).flashing(request.flash)
   }
 }

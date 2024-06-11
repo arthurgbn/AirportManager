@@ -1,0 +1,16 @@
+package forms
+
+import play.api.data.Form
+import play.api.data.Forms._
+
+object SignUpForm {
+  val form: Form[Data] = Form(
+    mapping(
+      "name" -> nonEmptyText,
+      "email" -> nonEmptyText,
+      "password" -> nonEmptyText
+    )(Data.apply)(Data.unapply)
+  )
+  case class Data(name: String, email: String, password: String)
+
+}

@@ -6,6 +6,8 @@
 GET     /login                   controllers.AuthController.showLoginForm
 POST    /login                   controllers.AuthController.login
 GET     /logout                  controllers.AuthController.logout
+GET     /signup                controllers.AuthController.showRegisterForm
+POST    /signup                controllers.AuthController.register
 
 # Home routes
 GET     /                       controllers.HomeController.index
