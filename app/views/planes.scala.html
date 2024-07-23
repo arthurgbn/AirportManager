@@ -1,6 +1,6 @@
 @(planes: List[Plane])(implicit request: RequestHeader)
-<div class="m-3">
-    <table class="table">
+<div>
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -15,9 +15,9 @@
                     <td>@plane.model</td>
                     <td>@plane.capacity</td>
                     <td>
-                        <form action="@routes.PlaneController.delete(plane.id)" method="post" style="display: inline;">
+                        <form action="@routes.PlaneController.delete(plane.id)" method="post">
                             @helper.CSRF.formField
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" >Delete</button>
                         </form>
                 </tr>
             }
@@ -25,6 +25,6 @@
     </table>
 
 
-    <a href="@routes.HomeController.goToAddPlane" class="btn btn-primary">Add Plane</a>
+    <a href="@routes.HomeController.goToAddPlane">Add Plane</a>
 
 </div>

@@ -2,67 +2,61 @@
 
     @main("Index") {
         @flash.get("error").map { message =>
-            <div id="error-message" class="alert alert-danger">
+            <div id="error-message">
                 @message
-                <button id="close-button" type="button" class="close" aria-label="Close">
+                <button id="close-button" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         }
 
         @flash.get("success").map { message =>
-            <div id="success-message" class="alert alert-success">
+            <div id="success-message">
                 @message
-                <button id="close-button" type="button" class="close" aria-label="Close">
+                <button id="close-button" type="button">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
         }
-
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/">
-                <img src="@routes.Assets.versioned("images/lunatech_logo.jpeg")" width="30" height="30" class="d-inline-block align-top" alt="">
+        <nav >
+            <a  href="/">
+                <img src="@routes.Assets.versioned("images/lunatech_logo.jpeg")" width="30" height="30"  alt="">
             </a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="nav nav-tabs " id="myTab" role="tablist">
-                    <li class="nav-item active">
-                        <a class="nav-link active" id="flights-tab" data-toggle="tab" href="#flights" aria-controls="flights" aria-selected="true">
+            <div  id="navbarNav">
+                <ul  id="myTab" role="tablist">
+                    <li >
+                        <a  id="flights-tab" data-toggle="tab" href="#flights" aria-controls="flights" aria-selected="true">
                             Flights</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="airports-tab" data-toggle="tab" href="#airports" role="tab" aria-controls="airports" aria-selected="false">
+                    <li>
+                        <a id="airports-tab" data-toggle="tab" href="#airports" role="tab" aria-controls="airports" aria-selected="false">
                             Airports</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="planes-tab" data-toggle="tab" href="#planes" role="tab" aria-controls="planes" aria-selected="false">
+                    <li >
+                        <a  id="planes-tab" data-toggle="tab" href="#planes" role="tab" aria-controls="planes" aria-selected="false">
                             Planes</a>
                     </li>
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link" href="@routes.AuthController.logout">Sign out</a>
+                    <li>
+                        <a  href="@routes.AuthController.logout">Sign out</a>
                     </li>
                 </ul>
             </div>
         </nav>
-        <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="flights" role="tabpanel" aria-labelledby="flights-tab">
+        <div id="myTabContent">
+            <div id="flights" role="tabpanel" aria-labelledby="flights-tab">
             @flights(flightsList, airportsList, planesList)
             </div>
-            <div class="tab-pane fade" id="airports" role="tabpanel" aria-labelledby="airports-tab">
+            <div id="airports" role="tabpanel" aria-labelledby="airports-tab">
             @airports(airportsList)
             </div>
-            <div class="tab-pane fade" id="planes" role="tabpanel" aria-labelledby="planes-tab">
+            <div  id="planes" role="tabpanel" aria-labelledby="planes-tab">
             @planes(planesList)
             </div>
         </div>
 
-        <footer class="footer">
-            <div class="container">
-                <span class="text-muted">© 2024 Lunatech Labs</span>
+        <footer >
+            <div >
+                <span>© 2024 Lunatech Labs</span>
             </div>
         </footer>
         <script>

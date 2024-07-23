@@ -3,44 +3,43 @@
 
 @(flights: List[Flight], airports: List[Airport], planes: List[Plane])(implicit   request: RequestHeader)
 
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<div class="m-3">
-    <form action="@routes.FlightController.filterFlights(None, None, None, None)" method="get" class="form-group">
-        <div class="row align-items-center">
-            <div class="col">
-                <label for="planeId" class="form-label">Plane:</label>
-                <select id="planeId" name="planeId" class="form-control">
+<div>
+    <form action="@routes.FlightController.filterFlights(None, None, None, None)" method="get">
+        <div >
+            <div>
+                <label for="planeId" >Plane:</label>
+                <select id="planeId" name="planeId">
                     <option value="">All</option>
                     @for(plane <- planes) {
                         <option value="@plane.id">@plane.model</option>
                     }
                 </select>
             </div>
-            <div class="col">
-                <label for="departureAirportId" class="form-label">Departure Airport:</label>
-                <select id="departureAirportId" name="departureAirportId" class="form-control">
+            <div>
+                <label for="departureAirportId" >Departure Airport:</label>
+                <select id="departureAirportId" name="departureAirportId">
                     <option value="">All</option>
                     @for(airport <- airports) {
                         <option value="@airport.id">@airport.name</option>
                     }
                 </select>
             </div>
-            <div class="col">
-                <label for="arrivalAirportId" class="form-label">Arrival Airport:</label>
-                <select id="arrivalAirportId" name="arrivalAirportId" class="form-control">
+            <div>
+                <label for="arrivalAirportId" >Arrival Airport:</label>
+                <select id="arrivalAirportId" name="arrivalAirportId">
                     <option value="">All</option>
                     @for(airport <- airports) {
                         <option value="@airport.id">@airport.name</option>
                     }
                 </select>
             </div>
-            <div class="col align-self-end">
-                <input type="submit" value="Filter" class="btn btn-primary">
+            <div>
+                <input type="submit" value="Filter" >
             </div>
         </div>
     </form>
 
-    <table class="table" id="flightsTable">
+    <table>
         <thead>
             <tr>
                 <th data-column="id"><a href="#">ID</a></th>
@@ -66,7 +65,7 @@
                 <td>
                     <form action="@routes.FlightController.delete(flight.id)" method="post">
                         @helper.CSRF.formField
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        <button type="submit">Delete</button>
                     </form>
                 </td>
             </tr>
@@ -74,7 +73,7 @@
         </tbody>
     </table>
 
-    <a href="@routes.HomeController.goToAddFlight" class="btn btn-primary">Add Flight</a>
+    <a href="@routes.HomeController.goToAddFlight" >Add Flight</a>
 
 </div>
 

@@ -1,6 +1,6 @@
 @(airports: List[Airport])(implicit request: RequestHeader)
-<div class="m-3">
-    <table class="table">
+<div>
+    <table>
         <thead>
             <tr>
                 <th>ID</th>
@@ -19,9 +19,9 @@
                     <td>@airport.city</td>
                     <td>@airport.country</td>
                     <td>
-                        <form action="@routes.AirportController.delete(airport.id)" method="post" style="display: inline;">
+                        <form action="@routes.AirportController.delete(airport.id)" method="post">
                             @helper.CSRF.formField
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -29,6 +29,6 @@
         </tbody>
     </table>
 
-    <a href="@routes.HomeController.goToAddAirport" class="btn btn-primary">Add Airport</a>
+    <a href="@routes.HomeController.goToAddAirport">Add Airport</a>
 
 </div>
