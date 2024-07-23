@@ -1,11 +1,10 @@
 @()(implicit request: RequestHeader, flash: play.api.mvc.Flash)
 
 @main("Login") {
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     @flash.get("error").map { message =>
-        <div id="error-message" class="alert alert-danger">
+        <div id="error-message">
             @message
-            <button id="close-button" type="button" class="close" aria-label="Close">
+            <button id="close-button" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
@@ -22,11 +21,11 @@
                         @helper.CSRF.formField
                         <div>
                             <input type="text" name="username" placeholder="Username" id="username" required>
-                            <label for="username" class="form-label"></label>
+                            <label for="username"></label>
                         </div>
                         <div>
                             <input type="password" name="password" placeholder="Password" id="password" required>
-                            <label for="password" class="form-label"></label>
+                            <label for="password"></label>
                         </div>
                         <button type="submit">
                             Sign in</button>
