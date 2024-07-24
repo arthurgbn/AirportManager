@@ -1,13 +1,13 @@
 package controllers
 
 import play.api.mvc._
-import services.PlaneService
+import services.{AirportService, FlightService, PlaneService}
 
 import javax.inject.Inject
-import scala.concurrent.{ExecutionContext,Future}
+import scala.concurrent.{ExecutionContext, Future}
 import forms.NewPlaneForm
 
-class PlaneController @Inject()(val controllerComponents: ControllerComponents, planeService: PlaneService) extends BaseController {
+class PlaneController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
   def delete(id: Long): Action[AnyContent] = Action {
     val success = planeService.deletePlane(id)
@@ -23,7 +23,7 @@ class PlaneController @Inject()(val controllerComponents: ControllerComponents, 
     implicit val ec: ExecutionContext = ExecutionContext.global
 
     NewPlaneForm.form.bindFromRequest.fold(
-      error => Future.successful(BadRequest(views.html.addPlane(planeService.getPlanes))),
+      error => Future.successful(BadRequest(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes))),
       planeData => {
         val model = planeData.model
         val capacity = planeData.capacity

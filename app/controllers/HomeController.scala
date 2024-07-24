@@ -16,33 +16,6 @@
       }
     }
 
-    def goToAddFlight(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-      request.session.get("username") match {
-        case Some(username) =>
-          Ok(views.html.addFlight(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
-        case None =>
-          Redirect(routes.AuthController.showLoginForm)
-      }
-    }
-
-    def goToAddPlane(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-      request.session.get("username") match {
-        case Some(username) =>
-          Ok(views.html.addPlane(planeService.getPlanes))
-        case None =>
-          Redirect(routes.AuthController.showLoginForm)
-      }
-    }
-
-    def goToAddAirport(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-      request.session.get("username") match {
-        case Some(username) =>
-          Ok(views.html.addAirport(airportService.getAirports))
-        case None =>
-          Redirect(routes.AuthController.showLoginForm)
-      }
-    }
-
     def flights: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
       Ok(views.html.flights(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
     }

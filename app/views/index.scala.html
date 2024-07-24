@@ -22,7 +22,7 @@
             <a  href="/">
                 <img src="@routes.Assets.versioned("images/lunatech_logo.jpeg")" width="30" height="30"  alt="">
             </a>
-            <div  id="navbarNav">
+            <div id="navbarNav">
                 <ul  id="myTab" role="tablist">
                     <li >
                         <a  id="flights-tab" data-toggle="tab" href="#flights" aria-controls="flights" aria-selected="true">
@@ -47,18 +47,22 @@
             @flights(flightsList, airportsList, planesList)
             </div>
             <div id="airports" role="tabpanel" aria-labelledby="airports-tab">
-            @airports(airportsList)
+            <!--airports(airportsList) -->
             </div>
             <div  id="planes" role="tabpanel" aria-labelledby="planes-tab">
-            @planes(planesList)
+            <!--planes(planesList) -->
             </div>
         </div>
 
-        <footer >
-            <div >
+        <footer>
+            <div>
                 <span>© 2024 Lunatech Labs</span>
             </div>
         </footer>
+
+
+
+
         <script>
                 window.onload = function () {
                     var errorMessage = document.getElementById('error-message');

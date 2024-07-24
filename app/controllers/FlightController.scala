@@ -31,7 +31,7 @@ import forms.NewFlightForm
     implicit val ec: ExecutionContext = ExecutionContext.global
 
     NewFlightForm.form.bindFromRequest.fold(
-      error => Future.successful(BadRequest(views.html.addFlight(flightService.getFlights, airportService.getAirports, planeService.getPlanes))),
+      error => Future.successful(BadRequest(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes))),
       flightData => {
         val departureAirportId = flightData.departureAirport.toLong
         val arrivalAirportId = flightData.arrivalAirport.toLong

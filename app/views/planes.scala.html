@@ -1,30 +1,47 @@
 @(planes: List[Plane])(implicit request: RequestHeader)
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Model</th>
-                <th>Capacity</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for(plane <- planes) {
-                <tr>
-                    <td>@plane.id</td>
-                    <td>@plane.model</td>
-                    <td>@plane.capacity</td>
-                    <td>
-                        <form action="@routes.PlaneController.delete(plane.id)" method="post">
-                            @helper.CSRF.formField
-                            <button type="submit" >Delete</button>
-                        </form>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div class="container border">
+    <div class="row">
+        <div class="col-8 border">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Model</th>
+                        <th>Capacity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(plane <- planes) {
+                        <tr>
+                            <td>@plane.id</td>
+                            <td>@plane.model</td>
+                            <td>@plane.capacity</td>
+                            <td>
+                                <form action="@routes.PlaneController.delete(plane.id)" method="post">
+                                    @helper.CSRF.formField
+                                    <button type="submit" >Delete</button>
+                                </form>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
 
-
-    <a href="@routes.HomeController.goToAddPlane">Add Plane</a>
+        <div class="col-4 border">
+            <h1>Add Plane</h1>
+            <form action="@routes.PlaneController.create" method="post">
+                @helper.CSRF.formField
+            <div>
+                <label for="model">Model</label>
+                <input type="text"  id="model" name="model" required>
+            </div>
+            <div>
+                <label for="capacity">Capacity</label>
+                <input type="number"  id="capacity" name="capacity" required>
+            </div>
+            <button type="submit">Add Plane</button>
+            </form>
+        </div>
+    </div>
 
 </div>

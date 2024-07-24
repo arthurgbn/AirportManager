@@ -3,101 +3,165 @@
 
 @(flights: List[Flight], airports: List[Airport], planes: List[Plane])(implicit   request: RequestHeader)
 
-<div>
-    <form action="@routes.FlightController.filterFlights(None, None, None, None)" method="get">
-        <div >
-            <div>
-                <label for="planeId" >Plane:</label>
-                <select id="planeId" name="planeId">
-                    <option value="">All</option>
+<div class="container">
+
+
+    <div class="row">
+        <div class="col-lg-12 col-xl-8 shadow rounded p-3 me-3 mb-5">
+            <h1 class="text-center"> Table content</h1>
+        <div class="table-responsive-md">
+        <table class="table table-striped table-borderless" id="flightsTable">
+            <thead>
+                <tr>
+                    <th scope="col" data-column="id"><a class="text-dark text-decoration-none" href="#">ID</a></th>
+                    <th scope="col" data-column="departureAirport"><a class="text-dark text-decoration-none" href="#">Departure Airport</a></th>
+                    <th scope="col" data-column="arrivalAirport"><a class="text-dark text-decoration-none" href="#">Arrival Airport</a></th>
+                    <th data-column="departureTime"><a class="text-dark text-decoration-none" href="#">Departure Time</a></th>
+                    <th data-column="arrivalTime"><a class="text-dark text-decoration-none" href="#">Arrival Time</a></th>
+                    <th data-column="plane"><a class="text-dark text-decoration-none" href="#">Plane</a></th>
+                    <th data-column="status"><a class="text-dark text-decoration-none" href="#">Status</a></th>
+                </tr>
+            </thead>
+            <tbody id="flightsTable">
+            @for(flight <- flights) {
+                <tr>
+                    <th scope="row" >@flight.id</th>
+                    <td>@airports.find(_.id == flight.departureAirportId).map(_.name).getOrElse("Unknown")</td>
+                    <td>@airports.find(_.id == flight.arrivalAirportId).map(_.name).getOrElse("Unknown")</td>
+                    <td>@flight.departureTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))</td>
+                    <td>@flight.arrivalTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))</td>
+                    <td>@planes.find(_.id == flight.planeId).map(_.model).getOrElse("Unknown")</td>
+                    <td>@flight.status</td>
+                    <td>
+                        <form action="@routes.FlightController.delete(flight.id)" method="post">
+                            @helper.CSRF.formField
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        </div>
+        </div>
+
+        <div class="col-lg-12 col-xl-3 align-content-center">
+            <div class="row mb-5 p-2 shadow rounded">
+                <h2>Add Flight</h2>
+                <form action="@routes.FlightController.create" method="post">
+                    @helper.CSRF.formField
+                <div>
+                    <label class="form-label" for="departureAirport">Departure Airport</label>
+                    <select class="form-select" id="departureAirport" name="departureAirport">
+                    @for(airport <- airports) {
+                        <option value="@airport.id">@airport.name</option>
+                    }
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label" for="arrivalAirport">Arrival Airport</label>
+                    <select class="form-select" id="arrivalAirport" name="arrivalAirport">
+                    @for(airport <- airports) {
+                        <option value="@airport.id">@airport.name</option>
+                    }
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label" for="departureTime">Departure Time</label>
+                    <input class="form-control" type="datetime-local"  id="departureTime" name="departureTime" value="@java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))" required>
+                </div>
+                <div >
+                    <label class="form-label" for="arrivalTime">Arrival Time</label>
+                    <input class="form-control" type="datetime-local"  id="arrivalTime" name="arrivalTime" value="@java.time.LocalDateTime.now().plusHours(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"))" required>
+                </div>
+                <div class="row justify-content-center m-1">
+                    <label class="form-label" for="plane">Plane</label>
+                    <select class="form-select" id="plane" name="plane">
                     @for(plane <- planes) {
                         <option value="@plane.id">@plane.model</option>
                     }
-                </select>
+                    </select>
+                </div>
+                <div class="text-center">
+                <button type="submit" class="btn btn-primary">Add Flight</button>
+                </div>
+                </form>
             </div>
-            <div>
-                <label for="departureAirportId" >Departure Airport:</label>
-                <select id="departureAirportId" name="departureAirportId">
-                    <option value="">All</option>
-                    @for(airport <- airports) {
-                        <option value="@airport.id">@airport.name</option>
-                    }
-                </select>
-            </div>
-            <div>
-                <label for="arrivalAirportId" >Arrival Airport:</label>
-                <select id="arrivalAirportId" name="arrivalAirportId">
-                    <option value="">All</option>
-                    @for(airport <- airports) {
-                        <option value="@airport.id">@airport.name</option>
-                    }
-                </select>
-            </div>
-            <div>
-                <input type="submit" value="Filter" >
+            <div class="row shadow p-2 rounded">
+                <h2>Filters</h2>
+                <form action="@routes.FlightController.filterFlights(None, None, None, None)" method="get">
+                    <div class="m-2">
+                        <select id="planeId" name="planeId" class="form-select">
+                            <option value="">Plane</option>
+                            @for(plane <- planes) {
+                                <option value="@plane.id">@plane.model</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="m-2">
+                        <select id="departureAirportId" name="departureAirportId" class="form-select">
+                            <option value="">Departure Airport</option>
+                            @for(airport <- airports) {
+                                <option value="@airport.id">@airport.name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="m-2">
+                        <select id="arrivalAirportId" name="arrivalAirportId" class="form-select">
+                            <option value="">Arrival Airport</option>
+                            @for(airport <- airports) {
+                                <option value="@airport.id">@airport.name</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="m-2 text-center">
+                        <input type="submit" value="Filter" class="btn btn-primary">
+                    </div>
+                </form>
             </div>
         </div>
-    </form>
-
-    <table id="flightsTable">
-        <thead>
-            <tr>
-                <th data-column="id"><a href="#">ID</a></th>
-                <th data-column="departureAirport"><a href="#">Departure Airport</a></th>
-                <th data-column="arrivalAirport"><a href="#">Arrival Airport</a></th>
-                <th data-column="departureTime"><a href="#">Departure Time</a></th>
-                <th data-column="arrivalTime"><a href="#">Arrival Time</a></th>
-                <th data-column="plane"><a href="#">Plane</a></th>
-                <th data-column="status"><a href="#">Status</a></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody id="flightsTable">
-        @for(flight <- flights) {
-            <tr>
-                <td>@flight.id</td>
-                <td>@airports.find(_.id == flight.departureAirportId).map(_.name).getOrElse("Unknown")</td>
-                <td>@airports.find(_.id == flight.arrivalAirportId).map(_.name).getOrElse("Unknown")</td>
-                <td>@flight.departureTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))</td>
-                <td>@flight.arrivalTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"))</td>
-                <td>@planes.find(_.id == flight.planeId).map(_.model).getOrElse("Unknown")</td>
-                <td>@flight.status</td>
-                <td>
-                    <form action="@routes.FlightController.delete(flight.id)" method="post">
-                        @helper.CSRF.formField
-                        <button type="submit">Delete</button>
-                    </form>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-
-    <a href="@routes.HomeController.goToAddFlight" >Add Flight</a>
-
+    </div>
 </div>
 
+
+
+
+
+
 <script>
-    // Sort flights list
-    document.querySelectorAll('#flightsTable th').forEach(title => {
-        title.addEventListener('click', evt => {
-            const table = title.closest('table')
-            const index_column = Array.prototype.indexOf.call(title.parentElement.children, title);
-            const direction = title.classList.contains('descending') ? 1 : -1;
-            console.log(direction)
-            const rows = Array.from(table.querySelectorAll('tr')).slice(1);
-            if (title.dataset.column === 'id' || title.dataset.column === 'departureTime' || title.dataset.column === 'arrivalTime') {
-                rows.sort((a, b) => direction * (parseInt(a.children[index_column].textContent) - parseInt(b.children[index_column].textContent)));
-            } else {
-                rows.sort((a, b) => direction * a.children[index_column].textContent.localeCompare(b.children[index_column].textContent));
-            }
-            rows.forEach(row => table.appendChild(row));
-            table.querySelectorAll('th').forEach(title => title.classList.remove('ascending', 'descending'));
-            if (direction === 1)
-                title.classList.add('ascending');
-            else
-                title.classList.add('descending');
-        });
-    })
+        // Sort flights list
+        document.querySelectorAll('#flightsTable th').forEach(title => {
+            title.addEventListener('click', evt => {
+                // Get the closest table and determine the column index
+                const table = title.closest('table');
+                const index_column = Array.prototype.indexOf.call(title.parentElement.children, title);
+
+                // Determine sort direction: ascending (-1) or descending (1)
+                const direction = title.classList.contains('descending') ? 1 : -1;
+
+                console.log(direction);
+
+                // Get all rows except the header
+                const rows = Array.from(table.querySelectorAll('tr')).slice(1);
+
+                // Sort rows based on the data type of the column
+                if (title.dataset.column === 'id' || title.dataset.column === 'departureTime' || title.dataset.column === 'arrivalTime') {
+                    rows.sort((a, b) => direction * (parseInt(a.children[index_column].textContent) - parseInt(b.children[index_column].textContent)));
+                } else {
+                    rows.sort((a, b) => direction * a.children[index_column].textContent.localeCompare(b.children[index_column].textContent));
+                }
+
+                // Append sorted rows back to the table
+                rows.forEach(row => table.appendChild(row));
+
+                // Reset header classes and set the appropriate class for the sorted column
+                table.querySelectorAll('th').forEach(title => title.classList.remove('ascending', 'descending'));
+                if (direction === 1)
+                    title.classList.add('ascending');
+                else
+                    title.classList.add('descending');
+            });
+        })
 </script>
+
 
