@@ -1,6 +1,17 @@
 @()(implicit request: RequestHeader, flash: play.api.mvc.Flash)
 
-@main("Login") {
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        @* Here's where we render the page title `String`. *@
+    <title>Login Page</title>
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+    <link href="@routes.Assets.versioned("stylesheets/bootstrap.css")" media="screen" rel="stylesheet" type="text/css" />
+    </head>
+
+    <body>
+
     @flash.get("error").map { message =>
         <div id="error-message">
             @message
@@ -34,8 +45,6 @@
             </div>
         </div>
     </div>
-}
-
     <script>
                 window.onload = function () {
                     var errorMessage = document.getElementById('error-message');
@@ -47,3 +56,9 @@
                     }
                 };
         </script>
+
+
+    </body>
+</html>
+
+

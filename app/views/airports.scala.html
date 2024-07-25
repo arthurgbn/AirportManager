@@ -1,60 +1,63 @@
 @(airports: List[Airport])(implicit request: RequestHeader)
-<div class="container border">
-    <div class="row">
-        <div class="col-8 border">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Code</th>
-                        <th>City</th>
-                        <th>Country</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for(airport <- airports) {
-                        <tr>
-                            <td>@airport.id</td>
-                            <td>@airport.name</td>
-                            <td>@airport.code</td>
-                            <td>@airport.city</td>
-                            <td>@airport.country</td>
-                            <td>
-                                <form action="@routes.AirportController.delete(airport.id)" method="post">
-                                    @helper.CSRF.formField
-                                    <button type="submit">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
 
-        <div class="col-4 border">
-            <h1>Add Airport</h1>
-            <form action="@routes.AirportController.create" method="post">
-                @helper.CSRF.formField
-            <div>
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-            </div>
-            <div >
-                <label for="code">Code</label>
-                <input type="text" id="code" name="code" required>
-            </div>
-            <div >
-                <label for="city">City</label>
-                <input type="text" id="city" name="city" required>
-            </div>
-            <div >
-                <label for="country">Country</label>
-                <input type="text" id="country" name="country" required>
-            </div>
-            <button type="submit">Add Airport</button>
-            </form>
-        </div>
+@main("Airports") {
+
+<div class="row">
+    <div class="col-8 border">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Code</th>
+                    <th>City</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for(airport <- airports) {
+                    <tr>
+                        <td>@airport.id</td>
+                        <td>@airport.name</td>
+                        <td>@airport.code</td>
+                        <td>@airport.city</td>
+                        <td>@airport.country</td>
+                        <td>
+                            <form action="@routes.AirportController.delete(airport.id)" method="post">
+                                @helper.CSRF.formField
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
+    <div class="col-4 border">
+        <h1>Add Airport</h1>
+        <form action="@routes.AirportController.create" method="post">
+            @helper.CSRF.formField
+        <div>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div >
+            <label for="code">Code</label>
+            <input type="text" id="code" name="code" required>
+        </div>
+        <div >
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" required>
+        </div>
+        <div >
+            <label for="country">Country</label>
+            <input type="text" id="country" name="country" required>
+        </div>
+        <button type="submit">Add Airport</button>
+        </form>
+    </div>
 </div>
+
+
+}

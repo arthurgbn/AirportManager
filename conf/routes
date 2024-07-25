@@ -19,9 +19,11 @@ POST    /flights                controllers.FlightController.create
 GET     /flights/filter         controllers.FlightController.filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String])
 
 # Airport routes
+GET     /airports               controllers.HomeController.airports
 POST    /airports/:id           controllers.AirportController.delete(id: Long)
 POST    /airports               controllers.AirportController.create
 
 # Plane routes
+GET     /planes                 controllers.HomeController.planes
 POST    /planes/:id             controllers.PlaneController.delete(id: Long)
 POST    /planes                 controllers.PlaneController.create

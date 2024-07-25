@@ -10,7 +10,7 @@
     def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
       request.session.get("username") match {
         case Some(username) =>
-          Ok(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
+          Ok(views.html.flights(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
         case None =>
           Redirect(routes.AuthController.showLoginForm)
       }
