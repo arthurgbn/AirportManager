@@ -29,7 +29,7 @@ class PlaneController @Inject()(val controllerComponents: ControllerComponents, 
         val capacity = planeData.capacity
 
         planeService.addPlane(model, capacity).map { _ =>
-          Redirect(routes.HomeController.index)
+          Redirect(routes.HomeController.planes)
         }
       }
     )

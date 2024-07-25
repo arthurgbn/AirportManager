@@ -15,9 +15,9 @@
         <link href="@routes.Assets.versioned("stylesheets/bootstrap.css")" media="screen" rel="stylesheet" type="text/css" />
     </head>
 
-    <body>
+    <body data-bs-theme="light">
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-black" >
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container">
                 <a class="navbar-brand" href="#">
                     <img src="@routes.Assets.versioned("images/lunatech_logo.jpeg")" width="30" height="30"  alt="">
@@ -38,8 +38,18 @@
                         <li class="nav-item">
                             <a class="nav-link" href="@routes.HomeController.planes">Planes</a>
                         </li>
-                        <li class="nav-item ms-auto">
+                        <li class="nav-item ms-lg-auto">
                             <a class="nav-link" href="@routes.AuthController.logout">Log out</a>
+                        </li>
+                        <li class="nav-item align-content-center text-md-end">
+                            <div>
+                                <button
+                                onclick="myFunction()"
+                                style="background: none; border: none; padding: 0; cursor: pointer;"
+                                >
+                                    <img src="@routes.Assets.versioned("images/icon-dark-mode.svg")" alt="Dark Mode Toggle" id="darkModeIcon" style="width: 24px; height: 24px;">
+                                </button>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -56,5 +66,30 @@
             </div>
         </footer>
         <script src="@routes.Assets.versioned("javascripts/bootstrap.js")" type="text/javascript"></script>
+
+        <script>
+            function myFunction() {
+            var element = document.body;
+            element.dataset.bsTheme =
+            element.dataset.bsTheme === "light" ? "dark" : "light";
+
+            // Optional: Change the icon based on the theme
+            var icon = document.getElementById("darkModeIcon");
+            if (element.dataset.bsTheme === "dark") {
+            icon.style.filter = "invert(1)"; // Invert the image colors
+        } else {
+            icon.style.filter = "invert(0)"; // Reset to original colors
+        }
+        }
+            function stepFunction(event) {
+            debugger;
+            var element = document.getElementsByClassName("collapse");
+            for (var i = 0; i < element.length; i++) {
+            if (element[i] !== event.target.ariaControls) {
+            element[i].classList.remove("show");
+        }
+        }
+        }
+        </script>
     </body>
 </html>

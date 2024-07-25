@@ -31,7 +31,7 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
         val code = airportData.code
 
         airportService.addAirport(name, code, city, country).map { _ =>
-          Redirect(routes.HomeController.index)
+          Redirect(routes.HomeController.airports)
         }
       }
     )
