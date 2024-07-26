@@ -1,13 +1,13 @@
 package controllers
 
 import play.api.mvc._
-import services.AirportService
+import services.{AirportService, FlightService, PlaneService}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import forms.NewAirportForm
 
-class AirportController @Inject()(val controllerComponents: ControllerComponents, airportService: AirportService) extends BaseController {
+class AirportController @Inject()(val controllerComponents: ControllerComponents, flightService: FlightService, airportService: AirportService, planeService: PlaneService) extends BaseController {
 
   def delete(id: Long): Action[AnyContent] = Action {
     val success = airportService.deleteAirport(id)
@@ -22,7 +22,7 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
     implicit val ec: ExecutionContext = ExecutionContext.global
 
     NewAirportForm.form.bindFromRequest.fold(
-      error => Future.successful(BadRequest(views.html.addAirport(airportService.getAirports)))
+      error => Future.successful(BadRequest(views.html.airports(airportService.getAirports)))
       ,
       airportData => {
         val name = airportData.name
@@ -31,7 +31,7 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
         val code = airportData.code
 
         airportService.addAirport(name, code, city, country).map { _ =>
-          Redirect(routes.HomeController.index)
+          Redirect(routes.HomeController.airports)
         }
       }
     )

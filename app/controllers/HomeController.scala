@@ -10,34 +10,7 @@
     def index: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
       request.session.get("username") match {
         case Some(username) =>
-          Ok(views.html.index(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
-        case None =>
-          Redirect(routes.AuthController.showLoginForm)
-      }
-    }
-
-    def goToAddFlight(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-      request.session.get("username") match {
-        case Some(username) =>
-          Ok(views.html.addFlight(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
-        case None =>
-          Redirect(routes.AuthController.showLoginForm)
-      }
-    }
-
-    def goToAddPlane(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-      request.session.get("username") match {
-        case Some(username) =>
-          Ok(views.html.addPlane(planeService.getPlanes))
-        case None =>
-          Redirect(routes.AuthController.showLoginForm)
-      }
-    }
-
-    def goToAddAirport(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
-      request.session.get("username") match {
-        case Some(username) =>
-          Ok(views.html.addAirport(airportService.getAirports))
+          Ok(views.html.flights(flightService.getFlights, airportService.getAirports, planeService.getPlanes))
         case None =>
           Redirect(routes.AuthController.showLoginForm)
       }

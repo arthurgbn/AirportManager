@@ -1,9 +1,10 @@
+
 name := """AirportManager"""
 
 version := "1.0-SNAPSHOT"
 
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file(".")).enablePlugins(PlayScala, SbtSassify)
 
 scalaVersion := "2.13.14"
 

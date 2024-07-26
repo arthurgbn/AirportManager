@@ -1,30 +1,53 @@
 @(planes: List[Plane])(implicit request: RequestHeader)
-<div class="m-3">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Model</th>
-                <th>Capacity</th>
-            </tr>
-        </thead>
-        <tbody>
+
+@main("Planes") {
+
+<div class="row">
+    <div class="col-lg-12 col-xl-3">
+        <div class="shadow rounded p-4">
+            <h1>Add Plane</h1>
+            <form action="@routes.PlaneController.create" method="post">
+                @helper.CSRF.formField
+                <div>
+                    <label class="form-label" for="model">Model</label>
+                    <input class="form-control" type="text"  id="model" name="model" required>
+                </div>
+                <div>
+                    <label class="form-label" for="capacity">Capacity</label>
+                    <input class="form-control" type="number"  id="capacity" name="capacity" required>
+                </div>
+                <div class="text-center mt-2">
+                    <button type="submit" class="btn btn-primary">Add Plane</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-lg-12 col-xl-8 shadow-sm rounded p-2 me-3 mb-3">
+        <div class="row justify-content-center">
             @for(plane <- planes) {
-                <tr>
-                    <td>@plane.id</td>
-                    <td>@plane.model</td>
-                    <td>@plane.capacity</td>
-                    <td>
-                        <form action="@routes.PlaneController.delete(plane.id)" method="post" style="display: inline;">
-                            @helper.CSRF.formField
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
-                </tr>
+
+                <div class="card w-auto m-1 shadow-lg p-2">
+                    <img src="https://picsum.photos/300/200" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"> id : @plane.id </li>
+                            <li class="list-group-item"> model : @plane.model </li>
+                            <li class="list-group-item"> capacity : @plane.capacity </li>
+                            <li class="list-group-item">
+                                <form action="@routes.PlaneController.delete(plane.id)" method="post" style="display: inline;">
+                                    @helper.CSRF.formField
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
+        </div>
+    </div>
 
-
-    <a href="@routes.HomeController.goToAddPlane" class="btn btn-primary">Add Plane</a>
 
 </div>
+
+
+}

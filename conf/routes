@@ -14,17 +14,16 @@ GET     /                       controllers.HomeController.index
 GET     /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)
 
 # Flight routes
-GET     /flights/addFlight      controllers.HomeController.goToAddFlight
 POST    /flights/:id            controllers.FlightController.delete(id: Long)
 POST    /flights                controllers.FlightController.create
 GET     /flights/filter         controllers.FlightController.filterFlights(planeId: Option[Long], departureAirportId: Option[Long], arrivalAirportId: Option[Long], status: Option[String])
 
 # Airport routes
-GET     /airports/addAirport    controllers.HomeController.goToAddAirport
+GET     /airports               controllers.HomeController.airports
 POST    /airports/:id           controllers.AirportController.delete(id: Long)
 POST    /airports               controllers.AirportController.create
 
 # Plane routes
-GET     /planes/addPlane        controllers.HomeController.goToAddPlane
+GET     /planes                 controllers.HomeController.planes
 POST    /planes/:id             controllers.PlaneController.delete(id: Long)
 POST    /planes                 controllers.PlaneController.create
