@@ -1,3 +1,9 @@
 
+// override bootstrap variables
+$primary: #d0ff00;
 
-@import 'vendors/bootstrap-5.3.3/scss/bootstrap';
+
+// import bootstrap
+@import 'vendors/bootstrap/scss/bootstrap';
+
+

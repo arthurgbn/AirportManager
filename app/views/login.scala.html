@@ -7,57 +7,42 @@
         @* Here's where we render the page title `String`. *@
     <title>Login Page</title>
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
-    <link href="@routes.Assets.versioned("stylesheets/bootstrap.css")" media="screen" rel="stylesheet" type="text/css" />
     </head>
 
     <body>
-
-    @flash.get("error").map { message =>
-        <div id="error-message">
-            @message
-            <button id="close-button" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    }
-    <div>
-
+        @flash.get("error").map { message =>
+            <div id="error-message">
+                @message
+                <button id="close-button" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
         <div>
+
             <div>
-
                 <div>
-                    <h3>Sign in</h3>
 
-                    <form action="@routes.AuthController.login" method="POST">
-                        @helper.CSRF.formField
-                        <div>
-                            <input type="text" name="username" placeholder="Username" id="username" required>
-                            <label for="username"></label>
-                        </div>
-                        <div>
-                            <input type="password" name="password" placeholder="Password" id="password" required>
-                            <label for="password"></label>
-                        </div>
-                        <button type="submit">
-                            Sign in</button>
-                    </form>
+                    <div>
+                        <h3>Sign in</h3>
+
+                        <form action="@routes.AuthController.login" method="POST">
+                            @helper.CSRF.formField
+                            <div>
+                                <input type="text" name="username" placeholder="Username" id="username" required>
+                                <label for="username"></label>
+                            </div>
+                            <div>
+                                <input type="password" name="password" placeholder="Password" id="password" required>
+                                <label for="password"></label>
+                            </div>
+                            <button type="submit">
+                                Sign in</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script>
-                window.onload = function () {
-                    var errorMessage = document.getElementById('error-message');
-                    var closeButton = document.getElementById('close-button');
-                    if (errorMessage && closeButton) {
-                        closeButton.addEventListener('click', function () {
-                            errorMessage.style.display = 'none';
-                        });
-                    }
-                };
-        </script>
-
-
     </body>
 </html>
 

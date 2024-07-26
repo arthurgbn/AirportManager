@@ -17,7 +17,7 @@ import forms.NewFlightForm
     request.session.get("username") match {
       case Some(_) =>
         flightService.deleteFlight(id)
-        Redirect(routes.HomeController.planes)
+        Redirect(routes.HomeController.index)
       case None =>
         Redirect(routes.AuthController.showLoginForm).flashing("error" -> "You must be authenticated to delete a flight.")
     }
@@ -50,7 +50,7 @@ import forms.NewFlightForm
         )
 
         flightService.addFlight(newFlight).map { _ =>
-          Redirect(routes.HomeController.planes)
+          Redirect(routes.HomeController.index)
         }
       }
     )

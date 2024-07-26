@@ -12,7 +12,7 @@
         @* Here's where we render the page title `String`. *@
     <title>@title</title>
     <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
-        <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("stylesheets/custom.css")">
+    <link rel="stylesheet" type="text/css" href="@routes.Assets.versioned("stylesheets/custom.css")">
     </head>
 
     <body data-bs-theme="light">
@@ -41,7 +41,7 @@
                         <li class="nav-item ms-lg-auto">
                             <a class="nav-link" href="@routes.AuthController.logout">Log out</a>
                         </li>
-                        <li class="nav-item align-content-center text-md-end">
+                        <li class="nav-item align-content-center text-lg-end">
                             <div>
                                 <button
                                 onclick="myFunction()"
@@ -65,7 +65,6 @@
                 <span>© 2024 Lunatech Labs</span>
             </div>
         </footer>
-        <script src="@routes.Assets.versioned("javascripts/bootstrap.js")" type="text/javascript"></script>
 
         <script>
             function myFunction() {
@@ -91,5 +90,7 @@
         }
         }
         </script>
+
+        <script src="@routes.Assets.versioned("stylesheets/vendors/bootstrap/dist/js/bootstrap.js")" type="text/javascript"></script>
     </body>
 </html>
