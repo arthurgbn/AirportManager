@@ -12,9 +12,9 @@ class PlaneController @Inject()(val controllerComponents: ControllerComponents, 
   def delete(id: Long): Action[AnyContent] = Action {
     val success = planeService.deletePlane(id)
     if (success) {
-      Redirect(routes.HomeController.index)
+      Redirect(routes.HomeController.planes)
     } else {
-      Redirect(routes.HomeController.index).flashing("error" -> "Cannot delete plane because it is used in a flight.")
+      Redirect(routes.HomeController.planes).flashing("error" -> "Cannot delete plane because it is used in a flight.")
     }
   }
 
