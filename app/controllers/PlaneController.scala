@@ -12,7 +12,7 @@ class PlaneController @Inject()(val controllerComponents: ControllerComponents, 
   def delete(id: Long): Action[AnyContent] = Action {
     val success = planeService.deletePlane(id)
     if (success) {
-      Redirect(routes.HomeController.planes)
+      Redirect(routes.HomeController.planes).flashing("success" -> "Plane deleted.")
     } else {
       Redirect(routes.HomeController.planes).flashing("error" -> "Cannot delete plane because it is used in a flight.")
     }
@@ -29,7 +29,7 @@ class PlaneController @Inject()(val controllerComponents: ControllerComponents, 
         val capacity = planeData.capacity
 
         planeService.addPlane(model, capacity).map { _ =>
-          Redirect(routes.HomeController.planes)
+          Redirect(routes.HomeController.planes).flashing("success" -> "Plane added.")
         }
       }
     )

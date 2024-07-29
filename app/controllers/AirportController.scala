@@ -12,9 +12,9 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
   def delete(id: Long): Action[AnyContent] = Action {
     val success = airportService.deleteAirport(id)
     if (success) {
-      Redirect(routes.HomeController.index)
+      Redirect(routes.HomeController.airports).flashing("success" -> "Airport deleted.")
     } else {
-      Redirect(routes.HomeController.index).flashing("error" -> "Cannot delete airport because it is used in a flight.")
+      Redirect(routes.HomeController.airports).flashing("error" -> "Cannot delete airport because it is used in a flight.")
     }
   }
 
@@ -31,7 +31,7 @@ class AirportController @Inject()(val controllerComponents: ControllerComponents
         val code = airportData.code
 
         airportService.addAirport(name, code, city, country).map { _ =>
-          Redirect(routes.HomeController.airports)
+          Redirect(routes.HomeController.airports).flashing("success" -> "Airport added.")
         }
       }
     )
